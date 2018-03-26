@@ -2,6 +2,18 @@
 
 class StudentValidator
 {
+    private $sdg;
+
+    public function __construct(StudentDataGateway $sdg)
+    {
+        // Injecting StudentDataGateway object for assistance with email validation
+        $this->sdg = $sdg;
+    }
+
+    public function validateAllFields(Student $student) {
+        $errors = array();
+    }
+
     private function validateName(string $name)
     {
         $nameLength = mb_strlen($name);
@@ -17,7 +29,7 @@ class StudentValidator
             return "Имя должно содержать только русские буквы и начинаться с заглавной буквы.";
         }
 
-        return null;
+        return true;
     }
 
     private function validateSurname(string $surname)
@@ -35,16 +47,16 @@ class StudentValidator
             return "Фамилия должна содержать только русские буквы и начинаться с заглавной буквы.";
         }
 
-        return null;
+        return true;
     }
 
     private function validateGender(string $gender)
     {
-        if ($gender !== Student::getConstant("GENDER_MALE") || $gender !== Student::getConstant("GENDER_FEMALE")) {
+        if ($gender !== Student::GENDER_MALE || $gender !== Student::GENDER_FEMALE) {
             return "Вы не выбрали свой пол.";
         }
 
-        return null;
+        return true;
     }
 
     private function validateGroupNumber(string $groupNumber)
@@ -61,7 +73,7 @@ class StudentValidator
             return "Номер группы может содержать только цифры и русские буквы.";
         }
 
-        return null;
+        return true;
     }
 
     private function validateExamScore(int $examScore)
@@ -72,6 +84,35 @@ class StudentValidator
             return "Сумма баллов ЕГЭ не может превышать 300.";
         }
 
-        return null;
+        return true;
+    }
+
+    private function validateEmail(string $email) {
+        if (mb_strlen($email) === 0) {
+            return "Вы не заполнили обязательное поле \"E-mail\".";
+        } elseif ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+            // Validating email with the built-in function "filter_var"
+            return "E-mail должен быть в формате \"example@domain.com\".";
+        } elseif ( !$this->sdg->getUserByEmail($email) ){
+            return "Такой e-mail уже существует.";
+        }
+
+        return true;
+    }
+
+    private function validateBirthYear(int $birthYear) {
+        if ($birthYear < 1910 || $birthYear > 2008) {
+            return "Год рождения должен находиться в промежутке от 1910 до 2008.";
+        }
+
+        return true;
+    }
+
+    private function validateResidence(string $residence) {
+        if ($residence !== Student::RESIDENCE_RESIDENT || $residence !== Student::RESIDENCE_NONRESIDENT) {
+            return "Вы не выбрали свое местоположение.";
+        }
+
+        return true;
     }
 }

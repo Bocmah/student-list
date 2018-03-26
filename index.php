@@ -23,9 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <input type="radio" id="genderChoice1" name="gender" value="male"><label for="genderChoice1">Мужчина</label>
     <input type="radio" id="genderChoice2" name="gender" value="female"><label for="genderChoice2">Женщина</label><br>
     <label for="group-number">Номер группы:</label>
-    <input type="text" id="group-number" name="group-number"><br>
+    <input type="text" id="group-number" name="group_number"><br>
     <label for="exam-score">Количество баллов ЕГЭ:</label>
-    <input type="text" id="exam-score" name="exam-score"><br>
+    <input type="text" id="exam-score" name="exam_score"><br>
     <label for="email">E-mail:</label>
     <input type="email" id="email" name="email"><br>
     <input type="radio" id="countryChoice1" name="gender" value="resident"><label for="countryChoice1">Местный</label>
