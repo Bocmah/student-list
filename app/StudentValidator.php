@@ -10,10 +10,33 @@ class StudentValidator
         $this->sdg = $sdg;
     }
 
-    public function validateAllFields(Student $student) {
+    public function validateAllFields(Student $student)
+    {
         $errors = array();
+
+        $errors["fname"] = $this->validateName($student->getName());
+        $errors["surname"] = $this->validateSurname($student->getSurname());
+        $errors["group_number"] = $this->validateGroupNumber($student->getGroupNumber());
+        $errors["email"] = $this->validateEmail($student->getEmail());
+        $errors["exam_score"] = $this->validateExamScore($student->getExamScore());
+        $errors["birth_year"] = $this->validateBirthYear($student->getBirthYear());
+        $errors["gender"] = $this->validateGender($student->getGender());
+        $errors["residence"] = $this->validateResidence($student->getResidence());
+
+        // Looping through the errors array and removing all "true" values
+        foreach ($errors as $field => $error) {
+            if ($error === true) {
+                unset($errors[$field]);
+            }
+        }
+
+        return $errors;
     }
 
+    /**
+     * @param string $name
+     * @return bool|string
+     */
     private function validateName(string $name)
     {
         $nameLength = mb_strlen($name);
@@ -25,13 +48,17 @@ class StudentValidator
         }
         elseif ($nameLength > 50) {
             return "Имя не должно содержать более 50 символов, а Вы ввели {$nameLength}.";
-        } elseif ( !(preg_match($pattern,$name)) ) {
+        } elseif (!(preg_match($pattern,$name))) {
             return "Имя должно содержать только русские буквы и начинаться с заглавной буквы.";
         }
 
         return true;
     }
 
+    /**
+     * @param string $surname
+     * @return bool|string
+     */
     private function validateSurname(string $surname)
     {
         $surnameLength = mb_strlen($surname);
@@ -50,6 +77,10 @@ class StudentValidator
         return true;
     }
 
+    /**
+     * @param string $gender
+     * @return bool|string
+     */
     private function validateGender(string $gender)
     {
         if ($gender !== Student::GENDER_MALE || $gender !== Student::GENDER_FEMALE) {
@@ -59,6 +90,10 @@ class StudentValidator
         return true;
     }
 
+    /**
+     * @param string $groupNumber
+     * @return bool|string
+     */
     private function validateGroupNumber(string $groupNumber)
     {
         $groupNumberLength = mb_strlen($groupNumber);
@@ -76,21 +111,27 @@ class StudentValidator
         return true;
     }
 
+    /**
+     * @param int $examScore
+     * @return bool|string
+     */
     private function validateExamScore(int $examScore)
     {
-        if ($examScore < 0) {
-            return "Баллы ЕГЭ не могут быть отрицательным числом.";
-        } elseif ($examScore > 300) {
-            return "Сумма баллов ЕГЭ не может превышать 300.";
+        if ($examScore < 90 || $examScore > 300) {
+            return "Баллы ЕГЭ должны находиться в интервале от 90 до 300 включительно.";
         }
-
         return true;
     }
 
-    private function validateEmail(string $email) {
+    /**
+     * @param string $email
+     * @return bool|string
+     */
+    private function validateEmail(string $email)
+    {
         if (mb_strlen($email) === 0) {
             return "Вы не заполнили обязательное поле \"E-mail\".";
-        } elseif ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Validating email with the built-in function "filter_var"
             return "E-mail должен быть в формате \"example@domain.com\".";
         } elseif ( !$this->sdg->getUserByEmail($email) ){
@@ -100,15 +141,25 @@ class StudentValidator
         return true;
     }
 
-    private function validateBirthYear(int $birthYear) {
+    /**
+     * @param int $birthYear
+     * @return bool|string
+     */
+    private function validateBirthYear(int $birthYear)
+    {
         if ($birthYear < 1910 || $birthYear > 2008) {
-            return "Год рождения должен находиться в промежутке от 1910 до 2008.";
+            return "Год рождения должен находиться в интервале от 1910 до 2008 включительно.";
         }
 
         return true;
     }
 
-    private function validateResidence(string $residence) {
+    /**
+     * @param string $residence
+     * @return bool|string
+     */
+    private function validateResidence(string $residence)
+    {
         if ($residence !== Student::RESIDENCE_RESIDENT || $residence !== Student::RESIDENCE_NONRESIDENT) {
             return "Вы не выбрали свое местоположение.";
         }
