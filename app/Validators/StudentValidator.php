@@ -1,4 +1,8 @@
 <?php
+namespace StudentList\Validators;
+
+use StudentList\Entities\Student;
+use StudentList\Database\StudentDataGateway;
 
 class StudentValidator
 {

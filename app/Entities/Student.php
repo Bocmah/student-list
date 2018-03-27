@@ -1,4 +1,5 @@
 <?php
+namespace StudentList\Entities;
 
 class Student
 {

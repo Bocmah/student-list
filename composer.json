@@ -1,0 +1,9 @@
+{
+    "name": "bocmah/student-list",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "StudentList\\": "app/"
+        }
+    }
+}
