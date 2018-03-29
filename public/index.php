@@ -5,8 +5,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 require_once "../Views/student_form.php";
 require_once "../Views/footer.php";
-
-
-
-
-
