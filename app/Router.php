@@ -1,6 +1,6 @@
 <?php
 
-namespace StudentList\Routers;
+namespace StudentList;
 
 class Router
 {
@@ -11,7 +11,10 @@ class Router
     {
     }
 
-    public static function getInstance()
+    /**
+     * @return Router
+     */
+    public static function getInstance(): Router
     {
         if (empty(self::$instance)) {
             self::$instance = new Router();
@@ -19,12 +22,20 @@ class Router
         return self::$instance;
     }
 
+    /**
+     * @param array $routes
+     */
     public function define(array $routes)
     {
         $this->routes = $routes;
     }
 
-    public function direct($uri)
+    /**
+     * @param string $uri
+     * @return mixed
+     * @throws \Exception
+     */
+    public function direct(string $uri)
     {
         if (array_key_exists($uri, $this->routes)) {
             return $this->routes[$uri];
