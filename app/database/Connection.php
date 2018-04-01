@@ -28,10 +28,10 @@ class Connection
     {
         try {
             return new \PDO(
-                $config['connection'].';dbname='.$config['name'],
-                $config['username'],
-                $config['password'],
-                $config['options']
+                $config["database"]['connection'].';dbname='.$config["database"]['name'],
+                $config["database"]['username'],
+                $config["database"]['password'],
+                $config["database"]['options']
             );
         } catch (\PDOException $e) {
             die($e->getMessage());
