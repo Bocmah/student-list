@@ -1,7 +1,10 @@
 <?php
 namespace StudentList\Controllers;
 
-class HomeController
+class HomeController extends BaseController
 {
-
+    public function run()
+    {
+        // TODO: Implement run() method.
+    }
 }

@@ -19,10 +19,11 @@ class Router
      * @return mixed
      * @throws \Exception
      */
-    public function invokeController(string $uri)
+    public function getController(string $uri)
     {
         if (array_key_exists($uri, $this->routes)) {
-            return $this->routes[$uri];
+           $controllerName =  "\\StudentList\\Controllers\\{$this->routes[$uri]}";
+           return new $controllerName;
         }
 
         throw new \Exception("No route defined for this URI.");
