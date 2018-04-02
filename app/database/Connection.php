@@ -3,23 +3,6 @@ namespace StudentList\Database;
 
 class Connection
 {
-    private static $instance;
-
-    private function __construct()
-    {
-    }
-
-    /**
-     * @return Connection
-     */
-    public static function getInstance()
-    {
-        if (empty(self::$instance)) {
-            self::$instance = new Connection();
-        }
-        return self::$instance;
-    }
-
     /**
      * @param array $config
      * @return \PDO

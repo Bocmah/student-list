@@ -5,22 +5,6 @@ namespace StudentList;
 class Router
 {
     private $routes = [];
-    private static $instance;
-
-    private function __construct()
-    {
-    }
-
-    /**
-     * @return Router
-     */
-    public static function getInstance(): Router
-    {
-        if (empty(self::$instance)) {
-            self::$instance = new Router();
-        }
-        return self::$instance;
-    }
 
     /**
      * @param array $routes

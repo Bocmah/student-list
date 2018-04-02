@@ -3,23 +3,7 @@ namespace StudentList;
 
 class App
 {
-    private static $instance;
     private $dependencies = [];
-
-    private function __construct()
-    {
-    }
-
-    /**
-     * @return App
-     */
-    public static function getInstance(): App
-    {
-        if (empty(self::$instance)) {
-            self::$instance = new App();
-        }
-        return self::$instance;
-    }
 
     /**
      * @param $key
