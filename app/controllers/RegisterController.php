@@ -15,6 +15,11 @@ class RegisterController extends BaseController
         $this->render(__DIR__."/../../views/register.view.php");
     }
 
+    private function processPost()
+    {
+        echo "Здарова!";
+    }
+
     private function render($file)
     {
         require_once "{$file}";
@@ -22,7 +27,11 @@ class RegisterController extends BaseController
 
     public function run()
     {
-        $this->processGet();
+        if ($this->requestType === "GET") {
+            $this->processGet();
+        } else {
+            $this->processPost();
+        }
     }
 }
 

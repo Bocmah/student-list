@@ -1,5 +1,5 @@
 <?php require_once "partials/header.php" ?>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+<form method="post" action="register">
     <label for="fname">Имя:</label>
     <input type="text" id="fname" name="fname"><br>
     <label for="surname">Фамилия:</label>
