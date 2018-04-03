@@ -6,12 +6,12 @@ use StudentList\Database\StudentDataGateway;
 
 class StudentValidator
 {
-    private $sdg;
+    private $studentDataGateway;
 
-    public function __construct(StudentDataGateway $sdg)
+    public function __construct(StudentDataGateway $studentDataGateway)
     {
         // Injecting StudentDataGateway object for assistance with email validation
-        $this->sdg = $sdg;
+        $this->studentDataGateway = $studentDataGateway;
     }
 
     public function validateAllFields(Student $student)
@@ -27,14 +27,10 @@ class StudentValidator
         $errors["gender"] = $this->validateGender($student->getGender());
         $errors["residence"] = $this->validateResidence($student->getResidence());
 
-        // Looping through the errors array and removing all "true" values
-        foreach ($errors as $field => $error) {
-            if ($error === true) {
-                unset($errors[$field]);
-            }
-        }
-
-        return $errors;
+        // Removing correct fields from the errors array
+        return array_filter($errors, function($value) {
+            return $value !== true;
+        });
     }
 
     /**
@@ -74,7 +70,7 @@ class StudentValidator
         }
         elseif ($surnameLength > 50) {
             return "Фамилия не должна содержать более 50 символов, а Вы ввели {$surnameLength}.";
-        } elseif ( !(preg_match($pattern,$surname)) ) {
+        } elseif (!(preg_match($pattern,$surname))) {
             return "Фамилия должна содержать только русские буквы и начинаться с заглавной буквы.";
         }
 
@@ -107,7 +103,8 @@ class StudentValidator
         if ($groupNumberLength === 0) {
             return "Вы не заполнили обязательное поле \"Номер группы\"";
         } elseif ($groupNumberLength < 2 || $groupNumberLength > 5) {
-            return "Количество символов в номере группы должно находиться в интервале от 2 до 5, а Вы ввели {$groupNumberLength}";
+            return "Количество символов в номере группы должно находиться
+                    в интервале от 2 до 5, а Вы ввели {$groupNumberLength}";
         } elseif ( !(preg_match($pattern, $groupNumber)) ) {
             return "Номер группы может содержать только цифры и русские буквы.";
         }
@@ -138,7 +135,7 @@ class StudentValidator
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Validating email with the built-in function "filter_var"
             return "E-mail должен быть в формате \"example@domain.com\".";
-        } elseif ( !$this->sdg->getUserByEmail($email) ){
+        } elseif ($this->studentDataGateway->getUserByEmail($email) ){
             return "Такой e-mail уже существует.";
         }
 
