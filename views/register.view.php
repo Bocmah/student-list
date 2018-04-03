@@ -1,3 +1,4 @@
+<?php require_once "partials/header.php" ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <label for="fname">Имя:</label>
     <input type="text" id="fname" name="fname"><br>
@@ -18,3 +19,4 @@
 
     <input type="submit" name="submit" value="Отправить">
 </form>
+<?php require_once "partials/footer.php" ?>

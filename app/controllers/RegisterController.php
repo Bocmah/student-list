@@ -10,8 +10,19 @@ class RegisterController extends BaseController
         $this->requestType = $requestType;
     }
 
+    private function processGet()
+    {
+        $this->render(__DIR__."/../../views/register.view.php");
+    }
+
+    private function render($file)
+    {
+        require_once "{$file}";
+    }
+
     public function run()
     {
-        // TODO: Implement run() method.
+        $this->processGet();
     }
 }
+
