@@ -1,9 +1,13 @@
 <?php
 namespace StudentList\Controllers;
 
+use StudentList\App;
+
 class ControllerFactory
 {
-    public static function makeController(string $controllerName, string $requestType)
+    public static function makeController(string $controllerName,
+                                          string $requestType,
+                                          App $DIContainer)
     {
         $controller = null;
 
@@ -13,7 +17,11 @@ class ControllerFactory
                 $controller = new HomeController($requestType);
                 break;
             case "RegisterController":
-                $controller = new RegisterController($requestType);
+                $controller = new RegisterController(
+                    $requestType,
+                    $DIContainer->get("studentDataGateway"),
+                    $DIContainer->get("studentValidator")
+                );
                 break;
         }
 

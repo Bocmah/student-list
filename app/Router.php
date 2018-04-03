@@ -22,13 +22,14 @@ class Router
      * @return null|Controllers\HomeController|Controllers\RegisterController
      * @throws \Exception
      */
-    public function getController(string $uri, string $requestType)
+    public function getController(string $uri, string $requestType, App $DIContainer)
     {
         if (array_key_exists($uri, $this->routes)) {
            $controllerName =  $this->routes[$uri];
            $controller = ControllerFactory::makeController(
                          $controllerName,
-                           $requestType
+                           $requestType,
+                         $DIContainer
            );
 
            return $controller;

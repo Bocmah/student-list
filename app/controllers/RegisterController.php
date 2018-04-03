@@ -1,13 +1,23 @@
 <?php
 namespace StudentList\Controllers;
 
+use StudentList\Entities\Student;
+use StudentList\Database\StudentDataGateway;
+use StudentList\Validators\StudentValidator;
 
 
 class RegisterController extends BaseController
 {
-    public function __construct(string $requestType)
+    private $gateway;
+    private $validator;
+
+    public function __construct(string $requestType,
+                                StudentDataGateway $gateway,
+                                StudentValidator $validator)
     {
         $this->requestType = $requestType;
+        $this->gateway = $gateway;
+        $this->validator = $validator;
     }
 
     private function processGet()
@@ -17,7 +27,7 @@ class RegisterController extends BaseController
 
     private function processPost()
     {
-        echo "Здарова!";
+
     }
 
     private function render($file)
