@@ -44,11 +44,10 @@ class RegisterController extends BaseController
             $this->gateway->insertStudent($student);
             echo "Успех!";
         } else {
-            echo "Что-то пошло не так...";
-            echo "<br><br>";
-            var_dump($errors);
-            echo "<br><br>";
-            var_dump($_POST);
+            // Re-render the form passing $errors and $values arrays
+            $params["values"] = $values;
+            $params["errors"] = $errors;
+            $this->render(__DIR__."/../../views/register.view.php", $params);
         }
 
     }
@@ -85,8 +84,9 @@ class RegisterController extends BaseController
         return $values;
     }
 
-    private function render($file)
+    private function render($file, $params = [])
     {
+        extract($params,EXTR_SKIP);
         return require_once "{$file}";
     }
 
