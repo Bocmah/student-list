@@ -83,7 +83,7 @@ class StudentValidator
      */
     private function validateGender(string $gender)
     {
-        if ($gender !== Student::GENDER_MALE || $gender !== Student::GENDER_FEMALE) {
+        if ($gender !== Student::GENDER_MALE && $gender !== Student::GENDER_FEMALE) {
             return "Вы не выбрали свой пол.";
         }
 
@@ -161,7 +161,7 @@ class StudentValidator
      */
     private function validateResidence(string $residence)
     {
-        if ($residence !== Student::RESIDENCE_RESIDENT ||
+        if ($residence !== Student::RESIDENCE_RESIDENT &&
             $residence !== Student::RESIDENCE_NONRESIDENT) {
             return "Вы не выбрали свое местоположение.";
         }

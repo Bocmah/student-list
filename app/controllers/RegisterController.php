@@ -47,6 +47,8 @@ class RegisterController extends BaseController
             echo "Что-то пошло не так...";
             echo "<br><br>";
             var_dump($errors);
+            echo "<br><br>";
+            var_dump($_POST);
         }
 
     }
