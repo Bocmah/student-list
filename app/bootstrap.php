@@ -12,3 +12,4 @@ $app->bind("studentDataGateway", new StudentDataGateway($app->get("connection"))
 $app->bind("studentValidator", new StudentValidator($app->get("studentDataGateway")));
 $app->bind("urlManager", new UrlManager());
 
+

@@ -28,7 +28,26 @@ class RegisterController extends BaseController
     private function processPostRequest()
     {
         $values = $this->grabPostValues();
+        $student = new Student(
+            $values["name"],
+            $values["surname"],
+            $values["group_number"],
+            $values["email"],
+            $values["exam_score"],
+            $values["birth_year"],
+            $values["gender"],
+            $values["residence"]
+        );
+        $errors = $this->validator->validateAllFields($student);
 
+        if (empty($errors)) {
+            $this->gateway->insertStudent($student);
+            echo "Успех!";
+        } else {
+            echo "Что-то пошло не так...";
+            echo "<br><br>";
+            var_dump($errors);
+        }
 
     }
 
@@ -37,10 +56,10 @@ class RegisterController extends BaseController
         $values = [];
 
         $values["name"] = array_key_exists("name", $_POST) ?
-            strval($_POST["name"]) :
+            strval(trim($_POST["name"])) :
             "";
         $values["surname"] = array_key_exists("surname", $_POST) ?
-            strval($_POST["surname"]) :
+            strval(trim($_POST["surname"])) :
             "";
         $values["birth_year"] = array_key_exists("birth_year", $_POST) ?
             intval($_POST["birth_year"]) :
@@ -49,13 +68,13 @@ class RegisterController extends BaseController
             strval($_POST["gender"]) :
             "";
         $values["group_number"] = array_key_exists("group_number", $_POST) ?
-            strval($_POST["group_number"]) :
+            strval(trim($_POST["group_number"])) :
             "";
         $values["exam_score"] = array_key_exists("exam_score", $_POST) ?
             intval($_POST["exam_score"]) :
             0;
         $values["email"] = array_key_exists("email", $_POST) ?
-            strval($_POST["email"]) :
+            strval(trim($_POST["email"])) :
             "";
         $values["residence"] = array_key_exists("residence", $_POST) ?
             strval($_POST["residence"]) :

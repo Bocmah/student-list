@@ -1,22 +1,45 @@
 <?php
 namespace StudentList\Database;
 
+use StudentList\Entities\Student;
+
 class StudentDataGateway
 {
-    private $dbh;
+    private $pdo;
 
     // Getting pdo object to work with
     public function __construct(\PDO $pdo)
     {
-        $this->dbh = $pdo;
+        $this->pdo = $pdo;
     }
 
-    public function getUserByEmail(string $email)
+    public function insertStudent(Student $student)
     {
-        $stmt = $this->dbh->prepare("SELECT * FROM students WHERE email=?");
-        $stmt->bindParam(1, $email, \PDO::PARAM_STR);
-        $stmt->execute();
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $statement = $this->pdo->prepare(
+            "INSERT INTO students(first_name, surname, gender, group_number, 
+                                            email, exam_score, birth_year, residence)
+                       VALUES (:name, :sname, :gender, :groupnum, :email, :examscore, :byear, :residence)"
+        );
+        $statement->execute(array(
+           "name" => $student->getName(),
+           "sname" => $student->getSurname(),
+           "gender" => $student->getGender(),
+           "groupnum" => $student->getGroupNumber(),
+           "email" => $student->getEmail(),
+           "examscore" => $student->getExamScore(),
+           "byear" => $student->getBirthYear(),
+            "residence" => $student->getResidence()
+        ));
+    }
+
+    public function getStudentByEmail(string $email)
+    {
+        $statement = $this->pdo->prepare(
+            "SELECT * FROM students WHERE email=?"
+        );
+        $statement->bindParam(1, $email, \PDO::PARAM_STR);
+        $statement->execute();
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
         return $row;
     }
