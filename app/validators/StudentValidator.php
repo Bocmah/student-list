@@ -18,7 +18,7 @@ class StudentValidator
     {
         $errors = array();
 
-        $errors["fname"] = $this->validateName($student->getName());
+        $errors["name"] = $this->validateName($student->getName());
         $errors["surname"] = $this->validateSurname($student->getSurname());
         $errors["group_number"] = $this->validateGroupNumber($student->getGroupNumber());
         $errors["email"] = $this->validateEmail($student->getEmail());
