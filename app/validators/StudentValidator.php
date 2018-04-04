@@ -161,7 +161,8 @@ class StudentValidator
      */
     private function validateResidence(string $residence)
     {
-        if ($residence !== Student::RESIDENCE_RESIDENT || $residence !== Student::RESIDENCE_NONRESIDENT) {
+        if ($residence !== Student::RESIDENCE_RESIDENT ||
+            $residence !== Student::RESIDENCE_NONRESIDENT) {
             return "Вы не выбрали свое местоположение.";
         }
 

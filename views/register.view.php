@@ -6,8 +6,8 @@
     <input type="text" id="surname" name="surname"><br>
     <label for="birth_year">Год рождения:</label>
     <input type="number" min="1900" max="2008" step="1" id="birth_year" name="birth_year" value="2000"><br>
-    <input type="radio" id="gender_choice1" name="gender" value="male"><label for="gender_choice1">Мужчина</label>
-    <input type="radio" id="gender_choice2" name="gender" value="female"><label for="gender_choice2">Женщина</label><br>
+    <input type="radio" id="gender_choice1" name="gender" value="m"><label for="gender_choice1">Мужчина</label>
+    <input type="radio" id="gender_choice2" name="gender" value="f"><label for="gender_choice2">Женщина</label><br>
     <label for="group_number">Номер группы:</label>
     <input type="text" id="group_number" name="group_number"><br>
     <label for="exam_score">Количество баллов ЕГЭ:</label>
