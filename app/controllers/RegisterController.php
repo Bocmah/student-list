@@ -1,6 +1,7 @@
 <?php
 namespace StudentList\Controllers;
 
+use StudentList\AuthManager;
 use StudentList\Entities\Student;
 use StudentList\Database\StudentDataGateway;
 use StudentList\Validators\StudentValidator;
@@ -12,16 +13,19 @@ class RegisterController extends BaseController
     private $gateway;
     private $validator;
     private $util;
+    private $authManager;
 
     public function __construct(string $requestType,
                                 StudentDataGateway $gateway,
                                 StudentValidator $validator,
-                                Util $util)
+                                Util $util,
+                                AuthManager $authManager)
     {
         $this->requestType = $requestType;
         $this->gateway = $gateway;
         $this->validator = $validator;
         $this->util = $util;
+        $this->authManager = $authManager;
     }
 
     private function processGetRequest()
@@ -36,8 +40,10 @@ class RegisterController extends BaseController
         $errors = $this->validator->validateAllFields($student);
 
         if (empty($errors)) {
-            $student->setHash($this->util->generateHash());
+            $hash = $this->util->generateHash();
+            $student->setHash($hash);
             $this->gateway->insertStudent($student);
+            $this->authManager->logIn($hash);
             echo "Успех!";
         } else {
             // Re-render the form passing $errors and $values arrays

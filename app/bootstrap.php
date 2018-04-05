@@ -1,5 +1,5 @@
 <?php
-use StudentList\App;
+use StudentList\{App, AuthManager};
 use StudentList\Validators\StudentValidator;
 use StudentList\Helpers\{UrlManager, Util};
 use StudentList\Database\{Connection, StudentDataGateway};
@@ -12,5 +12,6 @@ $app->bind("studentDataGateway", new StudentDataGateway($app->get("connection"))
 $app->bind("studentValidator", new StudentValidator($app->get("studentDataGateway")));
 $app->bind("urlManager", new UrlManager());
 $app->bind("util", new Util());
+$app->bind("authManager", new AuthManager());
 
 
