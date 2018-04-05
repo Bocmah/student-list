@@ -101,6 +101,9 @@ class Student
         return $this->residence;
     }
 
+    /**
+     * @param string $hash
+     */
     public function setHash(string $hash)
     {
         $this->hash = $hash;

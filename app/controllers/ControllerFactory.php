@@ -20,7 +20,8 @@ class ControllerFactory
                 $controller = new RegisterController(
                     $requestType,
                     $DIContainer->get("studentDataGateway"),
-                    $DIContainer->get("studentValidator")
+                    $DIContainer->get("studentValidator"),
+                    $DIContainer->get("util")
                 );
                 break;
         }

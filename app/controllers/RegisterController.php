@@ -4,20 +4,24 @@ namespace StudentList\Controllers;
 use StudentList\Entities\Student;
 use StudentList\Database\StudentDataGateway;
 use StudentList\Validators\StudentValidator;
+use StudentList\Helpers\Util;
 
 
 class RegisterController extends BaseController
 {
     private $gateway;
     private $validator;
+    private $util;
 
     public function __construct(string $requestType,
                                 StudentDataGateway $gateway,
-                                StudentValidator $validator)
+                                StudentValidator $validator,
+                                Util $util)
     {
         $this->requestType = $requestType;
         $this->gateway = $gateway;
         $this->validator = $validator;
+        $this->util = $util;
     }
 
     private function processGetRequest()
@@ -28,16 +32,7 @@ class RegisterController extends BaseController
     private function processPostRequest()
     {
         $values = $this->grabPostValues();
-        $student = new Student(
-            $values["name"],
-            $values["surname"],
-            $values["group_number"],
-            $values["email"],
-            $values["exam_score"],
-            $values["birth_year"],
-            $values["gender"],
-            $values["residence"]
-        );
+        $student = $this->createStudent($values);
         $errors = $this->validator->validateAllFields($student);
 
         if (empty($errors)) {
@@ -50,6 +45,22 @@ class RegisterController extends BaseController
             $this->render(__DIR__."/../../views/register.view.php", $params);
         }
 
+    }
+
+    private function createStudent(array $values)
+    {
+        $student = new Student(
+            $values["name"],
+            $values["surname"],
+            $values["group_number"],
+            $values["email"],
+            $values["exam_score"],
+            $values["birth_year"],
+            $values["gender"],
+            $values["residence"]
+        );
+
+        return $student;
     }
 
     private function grabPostValues()
