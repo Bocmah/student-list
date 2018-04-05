@@ -17,8 +17,8 @@ class StudentDataGateway
     {
         $statement = $this->pdo->prepare(
             "INSERT INTO students(first_name, surname, gender, group_number, 
-                                            email, exam_score, birth_year, residence)
-                       VALUES (:name, :sname, :gender, :groupnum, :email, :examscore, :byear, :residence)"
+                                            email, exam_score, birth_year, residence, hash)
+                       VALUES (:name, :sname, :gender, :groupnum, :email, :examscore, :byear, :residence, :hash)"
         );
         $statement->execute(array(
            "name" => $student->getName(),
@@ -28,7 +28,8 @@ class StudentDataGateway
            "email" => $student->getEmail(),
            "examscore" => $student->getExamScore(),
            "byear" => $student->getBirthYear(),
-            "residence" => $student->getResidence()
+            "residence" => $student->getResidence(),
+            "hash" => $student->getHash()
         ));
     }
 

@@ -36,6 +36,7 @@ class RegisterController extends BaseController
         $errors = $this->validator->validateAllFields($student);
 
         if (empty($errors)) {
+            $student->setHash($this->util->generateHash());
             $this->gateway->insertStudent($student);
             echo "Успех!";
         } else {

@@ -102,6 +102,14 @@ class Student
     }
 
     /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
      * @param string $hash
      */
     public function setHash(string $hash)
