@@ -44,4 +44,16 @@ class StudentDataGateway
 
         return $row;
     }
+
+    public function getStudentByHash(string $hash)
+    {
+        $statement = $this->pdo->prepare(
+            "SELECT * FROM students WHERE hash=?"
+        );
+        $statement->bindParam(1,$hash,\PDO::PARAM_STR);
+        $statement->execute();
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return $row;
+    }
 }
