@@ -27,7 +27,12 @@ class ControllerFactory
                 );
                 break;
             case "ProfileController":
-                $controller = new ProfileController($requestType,$action);
+                $controller = new ProfileController(
+                    $requestType,
+                    $action,
+                    $DIContainer->get("StudentDataGateway"),
+                    $DIContainer->get("authManager")
+                );
                 break;
         }
 

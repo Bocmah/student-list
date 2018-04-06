@@ -22,6 +22,8 @@ class ProfileController extends BaseController
 
     private function processGetRequest()
     {
+        // Check if user is logged in first
+        // If he's not we redirect to the registration page and die()
         if ($this->action === "edit") {
             echo "Here we'll be editing";
         } else {
