@@ -31,6 +31,7 @@ class ControllerFactory
                     $requestType,
                     $action,
                     $DIContainer->get("studentDataGateway"),
+                    $DIContainer->get("studentValidator"),
                     $DIContainer->get("authManager")
                 );
                 break;

@@ -44,7 +44,8 @@ class RegisterController extends BaseController
             $student->setHash($hash);
             $this->gateway->insertStudent($student);
             $this->authManager->logIn($hash);
-            echo "Успех!";
+            header("Location: /");
+            die();
         } else {
             // Re-render the form passing $errors and $values arrays
             $params["values"] = $values;
@@ -110,6 +111,13 @@ class RegisterController extends BaseController
 
     public function run()
     {
+        // Check if user is not logged in first
+        if ($this->authManager->checkIfAuthorized()) {
+            // If he is we redirect to the profile page
+            header("Location: /profile");
+            die();
+        }
+
         if ($this->requestType === "GET") {
             $this->processGetRequest();
         } else {

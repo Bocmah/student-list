@@ -33,6 +33,31 @@ class StudentDataGateway
         ));
     }
 
+    public function updateStudent(Student $student)
+    {
+        $statement = $this->pdo->prepare(
+          "UPDATE students 
+                     SET `name` = :name,
+                         `surname` = :sname,
+                         `gender` = :gender,
+                         `group_number` = :groupnum,
+                         `email` = :email,
+                         `exam_score` = :examscore,
+                         `birth_year` = :byear,
+                         `residence` = :residence"
+        );
+        $statement->execute(array(
+            "name" => $student->getName(),
+            "sname" => $student->getSurname(),
+            "gender" => $student->getGender(),
+            "groupnum" => $student->getGroupNumber(),
+            "email" => $student->getEmail(),
+            "examscore" => $student->getExamScore(),
+            "byear" => $student->getBirthYear(),
+            "residence" => $student->getResidence(),
+        ));
+    }
+
     public function getStudentByEmail(string $email)
     {
         $statement = $this->pdo->prepare(
