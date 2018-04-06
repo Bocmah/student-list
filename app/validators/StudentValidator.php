@@ -1,17 +1,21 @@
 <?php
 namespace StudentList\Validators;
 
+use StudentList\AuthManager;
 use StudentList\Entities\Student;
 use StudentList\Database\StudentDataGateway;
 
 class StudentValidator
 {
     private $studentDataGateway;
+    private $authManager;
 
-    public function __construct(StudentDataGateway $studentDataGateway)
+    public function __construct(StudentDataGateway $studentDataGateway, AuthManager $authManager)
     {
-        // Injecting StudentDataGateway object for assistance with email validation
+        // Injecting StudentDataGateway and AuthManager for assistance with email validation
         $this->studentDataGateway = $studentDataGateway;
+        $this->authManager = $authManager;
+
     }
 
     public function validateAllFields(Student $student)
@@ -135,7 +139,8 @@ class StudentValidator
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // Validating email with the built-in function "filter_var"
             return "E-mail должен быть в формате \"example@domain.com\".";
-        } elseif ($this->studentDataGateway->getStudentByEmail($email) ){
+        } elseif (!$this->authManager->checkIfIsAuthorized() &&
+                   $this->studentDataGateway->getStudentByEmail($email)) {
             return "Такой e-mail уже существует.";
         }
 
