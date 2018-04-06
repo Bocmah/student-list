@@ -30,7 +30,7 @@ class ControllerFactory
                 $controller = new ProfileController(
                     $requestType,
                     $action,
-                    $DIContainer->get("StudentDataGateway"),
+                    $DIContainer->get("studentDataGateway"),
                     $DIContainer->get("authManager")
                 );
                 break;

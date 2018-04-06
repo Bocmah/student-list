@@ -1,7 +1,7 @@
 <?php require_once "partials/header.php" ?>
 <div class="profile-info">
     <h3 class="profile-info__fullname">
-        <?php echo htmlspecialchars($values["name"].$values["surname"], ENT_QUOTES) ?>
+        <?php echo htmlspecialchars($values["name"] . " " . $values["surname"], ENT_QUOTES) ?>
     </h3>
     <p class="profile-info__field">
         Пол: <?php echo $values["gender"] === "m" ? "мужской" : "женский" ?>

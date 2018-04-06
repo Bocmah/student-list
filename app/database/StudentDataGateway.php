@@ -16,7 +16,7 @@ class StudentDataGateway
     public function insertStudent(Student $student)
     {
         $statement = $this->pdo->prepare(
-            "INSERT INTO students(first_name, surname, gender, group_number, 
+            "INSERT INTO students(name, surname, gender, group_number, 
                                             email, exam_score, birth_year, residence, hash)
                        VALUES (:name, :sname, :gender, :groupnum, :email, :examscore, :byear, :residence, :hash)"
         );

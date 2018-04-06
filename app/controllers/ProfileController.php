@@ -23,17 +23,32 @@ class ProfileController extends BaseController
     private function processGetRequest()
     {
         // Check if user is logged in first
-        // If he's not we redirect to the registration page and die()
+        if (!$this->authManager->checkIfIsAuthorized()) {
+            // If he's not we redirect to the registration page
+            header("Location: /register");
+            die();
+        }
+
+        // Fetching student data from the database and preparing it for passing into view
+        $studentData = $this->studentDataGateway->getStudentByHash($_COOKIE["hash"]);
+        $params["values"] = $studentData;
+
         if ($this->action === "edit") {
-            echo "Here we'll be editing";
+            $this->render(__DIR__."/../../views/register.view.php", $params);
         } else {
-            echo "Here will be the profile";
+            $this->render(__DIR__."/../../views/profile.view.php", $params);
         }
     }
 
     private function processPostRequest()
     {
 
+    }
+
+    private function render($file, $params = [])
+    {
+        extract($params,EXTR_SKIP);
+        return require_once "{$file}";
     }
 
     public function run()
