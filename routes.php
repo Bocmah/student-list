@@ -2,5 +2,6 @@
 
 return [
    "" => "HomeController",
-   "register" => "RegisterController"
+   "register" => "RegisterController",
+   "profile" => "ProfileController"
 ];

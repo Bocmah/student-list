@@ -7,6 +7,7 @@ class ControllerFactory
 {
     public static function makeController(string $controllerName,
                                           string $requestType,
+                                          string $action,
                                           App $DIContainer)
     {
         $controller = null;
@@ -24,6 +25,9 @@ class ControllerFactory
                     $DIContainer->get("util"),
                     $DIContainer->get("authManager")
                 );
+                break;
+            case "ProfileController":
+                $controller = new ProfileController($requestType,$action);
                 break;
         }
 

@@ -5,7 +5,8 @@ class UrlManager
 {
     public function getUri()
     {
-        return trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH),"/");
+        $parsedUri = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH),"/");
+        return explode("/", $parsedUri);
     }
 
     public function getRequestMethod()
