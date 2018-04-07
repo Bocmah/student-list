@@ -30,7 +30,8 @@ class RegisterController extends BaseController
 
     private function processGetRequest()
     {
-        $this->render(__DIR__."/../../views/register.view.php");
+        $params["formAction"] = "register";
+        $this->render(__DIR__."/../../views/register.view.php", $params);
     }
 
     private function processPostRequest()

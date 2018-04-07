@@ -30,6 +30,7 @@ class ProfileController extends BaseController
         // Fetching student data from the database and preparing it for passing into view
         $studentData = $this->gateway->getStudentByHash($_COOKIE["hash"]);
         $params["values"] = $studentData;
+        $params["formAction"] = "edit";
 
         if ($this->action === "edit") {
             $this->render(__DIR__."/../../views/register.view.php", $params);
@@ -44,10 +45,11 @@ class ProfileController extends BaseController
             $values = $this->grabPostValues();
             $student = $this->createStudent($values);
             $errors = $this->validator->validateAllFields($student);
+            $hash = $_COOKIE["hash"];
+            $student->setHash($hash);
 
             if (empty($errors)) {
                 $this->gateway->updateStudent($student);
-                // TODO: Implement redirect
                 header("Location: /?notify=1");
                 die();
             } else {
@@ -118,7 +120,7 @@ class ProfileController extends BaseController
         // Check if user is logged in first
         if (!$this->authManager->checkIfAuthorized()) {
             // If he's not we redirect to the registration page
-            header("Location: /register");
+            var_dump($_COOKIE);
             die();
         }
 

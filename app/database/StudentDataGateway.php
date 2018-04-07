@@ -44,7 +44,8 @@ class StudentDataGateway
                          `email` = :email,
                          `exam_score` = :examscore,
                          `birth_year` = :byear,
-                         `residence` = :residence"
+                         `residence` = :residence
+                     WHERE `hash` = :hash"
         );
         $statement->execute(array(
             "name" => $student->getName(),
@@ -55,6 +56,7 @@ class StudentDataGateway
             "examscore" => $student->getExamScore(),
             "byear" => $student->getBirthYear(),
             "residence" => $student->getResidence(),
+            "hash" => $student->getHash()
         ));
     }
 
