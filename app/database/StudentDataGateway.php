@@ -13,6 +13,9 @@ class StudentDataGateway
         $this->pdo = $pdo;
     }
 
+    /**
+     * @param Student $student
+     */
     public function insertStudent(Student $student)
     {
         $statement = $this->pdo->prepare(
@@ -33,6 +36,9 @@ class StudentDataGateway
         ));
     }
 
+    /**
+     * @param Student $student
+     */
     public function updateStudent(Student $student)
     {
         $statement = $this->pdo->prepare(
@@ -60,6 +66,10 @@ class StudentDataGateway
         ));
     }
 
+    /**
+     * @param string $email
+     * @return mixed
+     */
     public function getStudentByEmail(string $email)
     {
         $statement = $this->pdo->prepare(
@@ -72,6 +82,36 @@ class StudentDataGateway
         return $row;
     }
 
+    /**
+     * @return mixed
+     */
+    public function countTableRows()
+    {
+        $statement = $this->pdo->prepare(
+            "SELECT count(*) FROM students"
+        );
+        $statement->execute();
+
+        return $statement->fetchColumn();
+    }
+
+    public function getStudents(int $offset, int $limit)
+    {
+        $statement = $this->pdo->prepare(
+          "SELECT name, surname, group_number, exam_score
+                     FROM students
+                     LIMIT {$offset}, {$limit}   
+          "
+        );
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param string $hash
+     * @return mixed
+     */
     public function getStudentByHash(string $hash)
     {
         $statement = $this->pdo->prepare(
