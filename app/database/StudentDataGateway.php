@@ -77,9 +77,8 @@ class StudentDataGateway
         );
         $statement->bindParam(1, $email, \PDO::PARAM_STR);
         $statement->execute();
-        $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return $row;
+        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -119,8 +118,7 @@ class StudentDataGateway
         );
         $statement->bindParam(1,$hash,\PDO::PARAM_STR);
         $statement->execute();
-        $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return $row;
+        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 }

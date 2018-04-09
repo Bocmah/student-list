@@ -8,8 +8,15 @@ class HomeController extends BaseController
         $this->requestMethod = $requestMethod;
     }
 
+    private function processGetRequest()
+    {
+
+    }
+
     public function run()
     {
-      // TODO: Implement method run()
+      if ($this->requestMethod === "GET") {
+          $this->processGetRequest();
+      }
     }
 }
