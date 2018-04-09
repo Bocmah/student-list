@@ -82,16 +82,16 @@ class StudentDataGateway
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function countTableRows()
+    public function countTableRows(): int
     {
         $statement = $this->pdo->prepare(
             "SELECT count(*) FROM students"
         );
         $statement->execute();
 
-        return $statement->fetchColumn();
+        return (int)$statement->fetchColumn();
     }
 
     public function getStudents(int $offset, int $limit)
