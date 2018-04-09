@@ -17,19 +17,21 @@ class Router
     }
 
     /**
-     * @param array $uri
-     * @param string $requestType
+     * @param App $DIContainer
      * @return null|Controllers\HomeController|Controllers\RegisterController
      * @throws \Exception
      */
-    public function getController(array $uri, string $requestType, App $DIContainer)
+    public function getController(App $DIContainer)
     {
+        $uri = $DIContainer->get("urlManager")->getUri();
+        $requestMethod = $DIContainer->get("urlManager")->getRequestMethod();
+
         if (array_key_exists($uri[0], $this->routes)) {
            $controllerName =  $this->routes[$uri[0]];
            $action = array_key_exists(1, $uri) ? $uri[1] : "/";
            $controller = ControllerFactory::makeController(
                          $controllerName,
-                           $requestType,
+                           $requestMethod,
                          $action,
                          $DIContainer
            );

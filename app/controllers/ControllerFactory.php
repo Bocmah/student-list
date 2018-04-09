@@ -6,7 +6,7 @@ use StudentList\App;
 class ControllerFactory
 {
     public static function makeController(string $controllerName,
-                                          string $requestType,
+                                          string $requestMethod,
                                           string $action,
                                           App $DIContainer)
     {
@@ -15,11 +15,11 @@ class ControllerFactory
         switch ($controllerName)
         {
             case "HomeController":
-                $controller = new HomeController($requestType);
+                $controller = new HomeController($requestMethod);
                 break;
             case "RegisterController":
                 $controller = new RegisterController(
-                    $requestType,
+                    $requestMethod,
                     $DIContainer->get("studentDataGateway"),
                     $DIContainer->get("studentValidator"),
                     $DIContainer->get("util"),
@@ -29,7 +29,7 @@ class ControllerFactory
                 break;
             case "ProfileController":
                 $controller = new ProfileController(
-                    $requestType,
+                    $requestMethod,
                     $action,
                     $DIContainer->get("studentDataGateway"),
                     $DIContainer->get("studentValidator"),

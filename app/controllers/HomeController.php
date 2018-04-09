@@ -3,9 +3,9 @@ namespace StudentList\Controllers;
 
 class HomeController extends BaseController
 {
-    public function __construct(string $requestType)
+    public function __construct(string $requestMethod)
     {
-        $this->requestType = $requestType;
+        $this->requestMethod = $requestMethod;
     }
 
     public function run()

@@ -15,7 +15,7 @@ class ProfileController extends BaseController
     private $util;
     private $urlManager;
 
-    public function __construct(string $requestType,
+    public function __construct(string $requestMethod,
                                 string $action,
                                 StudentDataGateway $studentDataGateway,
                                 StudentValidator $studentValidator,
@@ -23,7 +23,7 @@ class ProfileController extends BaseController
                                 Util $util,
                                 UrlManager $urlManager)
     {
-        $this->requestType = $requestType;
+        $this->requestMethod = $requestMethod;
         $this->action = $action;
         $this->gateway = $studentDataGateway;
         $this->validator = $studentValidator;
@@ -112,7 +112,7 @@ class ProfileController extends BaseController
             $this->urlManager->redirect("/register");
         }
 
-        if ($this->requestType === "GET") {
+        if ($this->requestMethod === "GET") {
             $this->processGetRequest();
         } else {
             $this->processPostRequest();

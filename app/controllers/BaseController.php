@@ -3,7 +3,7 @@ namespace StudentList\Controllers;
 
 abstract class BaseController
 {
-    protected $requestType;
+    protected $requestMethod;
     protected $action;
 
     abstract public function run();
