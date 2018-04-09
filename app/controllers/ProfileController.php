@@ -2,7 +2,8 @@
 namespace StudentList\Controllers;
 
 use StudentList\AuthManager;
-use StudentList\Entities\Student;
+use StudentList\Helpers\UrlManager;
+use StudentList\Helpers\Util;
 use StudentList\Database\StudentDataGateway;
 use StudentList\Validators\StudentValidator;
 
@@ -11,18 +12,24 @@ class ProfileController extends BaseController
     private $gateway;
     private $validator;
     private $authManager;
+    private $util;
+    private $urlManager;
 
     public function __construct(string $requestType,
                                 string $action,
                                 StudentDataGateway $studentDataGateway,
                                 StudentValidator $studentValidator,
-                                AuthManager $authManager)
+                                AuthManager $authManager,
+                                Util $util,
+                                UrlManager $urlManager)
     {
         $this->requestType = $requestType;
         $this->action = $action;
         $this->gateway = $studentDataGateway;
         $this->validator = $studentValidator;
         $this->authManager = $authManager;
+        $this->urlManager = $urlManager;
+        $this->util = $util;
     }
 
     private function processGetRequest()
@@ -43,15 +50,13 @@ class ProfileController extends BaseController
     {
         if ($this->action === "edit") {
             $values = $this->grabPostValues();
-            $student = $this->createStudent($values);
+            $student = $this->util->createStudent($values);
             $errors = $this->validator->validateAllFields($student);
-            $hash = $_COOKIE["hash"];
-            $student->setHash($hash);
+            $student->setHash($_COOKIE["hash"]);
 
             if (empty($errors)) {
                 $this->gateway->updateStudent($student);
-                header("Location: /?notify=1");
-                die();
+                $this->urlManager->redirect("/?notify=1");
             } else {
                 // Re-render the form passing $errors and $values arrays
                 $params["values"] = $values;
@@ -93,22 +98,6 @@ class ProfileController extends BaseController
         return $values;
     }
 
-    private function createStudent(array $values)
-    {
-        $student = new Student(
-            $values["name"],
-            $values["surname"],
-            $values["group_number"],
-            $values["email"],
-            $values["exam_score"],
-            $values["birth_year"],
-            $values["gender"],
-            $values["residence"]
-        );
-
-        return $student;
-    }
-
     private function render($file, $params = [])
     {
         extract($params,EXTR_SKIP);
@@ -120,8 +109,7 @@ class ProfileController extends BaseController
         // Check if user is logged in first
         if (!$this->authManager->checkIfAuthorized()) {
             // If he's not we redirect to the registration page
-            var_dump($_COOKIE);
-            die();
+            $this->urlManager->redirect("/register");
         }
 
         if ($this->requestType === "GET") {

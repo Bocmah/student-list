@@ -13,4 +13,10 @@ class UrlManager
     {
         return $_SERVER["REQUEST_METHOD"];
     }
+
+    public function redirect(string $path)
+    {
+        header("Location: {$path}");
+        die();
+    }
 }

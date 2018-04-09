@@ -5,7 +5,7 @@ use StudentList\AuthManager;
 use StudentList\Entities\Student;
 use StudentList\Database\StudentDataGateway;
 use StudentList\Validators\StudentValidator;
-use StudentList\Helpers\Util;
+use StudentList\Helpers\{Util, UrlManager};
 
 
 class RegisterController extends BaseController
@@ -14,18 +14,21 @@ class RegisterController extends BaseController
     private $validator;
     private $util;
     private $authManager;
+    private $urlManager;
 
     public function __construct(string $requestType,
                                 StudentDataGateway $gateway,
                                 StudentValidator $validator,
                                 Util $util,
-                                AuthManager $authManager)
+                                AuthManager $authManager,
+                                UrlManager $urlManager)
     {
         $this->requestType = $requestType;
         $this->gateway = $gateway;
         $this->validator = $validator;
         $this->util = $util;
         $this->authManager = $authManager;
+        $this->urlManager = $urlManager;
     }
 
     private function processGetRequest()
@@ -37,7 +40,7 @@ class RegisterController extends BaseController
     private function processPostRequest()
     {
         $values = $this->grabPostValues();
-        $student = $this->createStudent($values);
+        $student = $this->util->createStudent($values);
         $errors = $this->validator->validateAllFields($student);
 
         if (empty($errors)) {
@@ -45,31 +48,15 @@ class RegisterController extends BaseController
             $student->setHash($hash);
             $this->gateway->insertStudent($student);
             $this->authManager->logIn($hash);
-            header("Location: /");
-            die();
+            $this->urlManager->redirect("/?notify=1");
         } else {
             // Re-render the form passing $errors and $values arrays
+            $params["formAction"] = "register";
             $params["values"] = $values;
             $params["errors"] = $errors;
             $this->render(__DIR__."/../../views/register.view.php", $params);
         }
 
-    }
-
-    private function createStudent(array $values)
-    {
-        $student = new Student(
-            $values["name"],
-            $values["surname"],
-            $values["group_number"],
-            $values["email"],
-            $values["exam_score"],
-            $values["birth_year"],
-            $values["gender"],
-            $values["residence"]
-        );
-
-        return $student;
     }
 
     private function grabPostValues()
@@ -115,8 +102,8 @@ class RegisterController extends BaseController
         // Check if user is not logged in first
         if ($this->authManager->checkIfAuthorized()) {
             // If he is we redirect to the profile page
-            header("Location: /profile");
-            die();
+            // $this->urlManager->redirect("/");
+            $this->urlManager->redirect("/profile");
         }
 
         if ($this->requestType === "GET") {

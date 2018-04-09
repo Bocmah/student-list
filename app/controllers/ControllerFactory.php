@@ -23,7 +23,8 @@ class ControllerFactory
                     $DIContainer->get("studentDataGateway"),
                     $DIContainer->get("studentValidator"),
                     $DIContainer->get("util"),
-                    $DIContainer->get("authManager")
+                    $DIContainer->get("authManager"),
+                    $DIContainer->get("urlManager")
                 );
                 break;
             case "ProfileController":
@@ -32,7 +33,9 @@ class ControllerFactory
                     $action,
                     $DIContainer->get("studentDataGateway"),
                     $DIContainer->get("studentValidator"),
-                    $DIContainer->get("authManager")
+                    $DIContainer->get("authManager"),
+                    $DIContainer->get("util"),
+                    $DIContainer->get("urlManager")
                 );
                 break;
         }
