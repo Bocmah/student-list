@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo htmlspecialchars($formAction, ENT_QUOTES) ?>">
+<form method="post">
     <label for="fname">Имя:</label>
     <input type="text" id="fname" name="name"
            value="<?php echo isset($values["name"]) ?

@@ -37,7 +37,6 @@ class ProfileController extends BaseController
         // Fetching student data from the database and preparing it for passing into view
         $studentData = $this->gateway->getStudentByHash($_COOKIE["hash"]);
         $params["values"] = $studentData;
-        $params["formAction"] = "edit";
 
         if ($this->action === "edit") {
             $this->render(__DIR__."/../../views/register.view.php", $params);

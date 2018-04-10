@@ -51,7 +51,6 @@ class RegisterController extends BaseController
             $this->urlManager->redirect("/?notify=1");
         } else {
             // Re-render the form passing $errors and $values arrays
-            $params["formAction"] = "register";
             $params["values"] = $values;
             $params["errors"] = $errors;
             $this->render(__DIR__."/../../views/register.view.php", $params);
