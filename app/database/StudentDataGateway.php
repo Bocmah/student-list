@@ -107,6 +107,19 @@ class StudentDataGateway
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function searchStudents(string $keywords)
+    {
+        $statement = $this->pdo->prepare(
+          "SELECT * FROM students
+                     WHERE CONCAT(`name`,' ',`surname`,' ',`group_number`,' ',`exam_score`)
+                     LIKE :keywords"
+        );
+        $statement->bindValue("keywords", "%".$keywords."%");
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     /**
      * @param string $hash
      * @return mixed

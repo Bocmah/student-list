@@ -20,17 +20,23 @@ class HomeController extends BaseController
 
     private function processGetRequest()
     {
-        $page = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
-        $perPage = 10;
-        $offset = $this->pager->calculatePositioning($page, $perPage);
-        $students = $this->studentDataGateway->getStudents($offset,$perPage);
-        $columnCount = $this->studentDataGateway->countTableRows();
-        $totalPages = $this->pager->calculateTotalPages($columnCount, $perPage);
+        if (!isset($_GET["search"])) {
+            $page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
+            $perPage = 10;
+            $offset = $this->pager->calculatePositioning($page, $perPage);
+            $students = $this->studentDataGateway->getStudents($offset,$perPage);
+            $columnCount = $this->studentDataGateway->countTableRows();
+            $totalPages = $this->pager->calculateTotalPages($columnCount, $perPage);
 
-        $params["totalPages"] = $totalPages;
-        $params["students"] = $students;
+            $params["totalPages"] = $totalPages;
+            $params["students"] = $students;
 
-        $this->render(__DIR__."/../../views/home.view.php",$params);
+            $this->render(__DIR__."/../../views/home.view.php",$params);
+        } else {
+            var_dump($_GET["search"]);
+            $res = $this->studentDataGateway->searchStudents($_GET["search"]);
+            var_dump($res);
+        }
     }
 
     private function render($file, $params = [])
