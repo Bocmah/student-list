@@ -140,7 +140,7 @@ class StudentValidator
             // Validating email with the built-in function "filter_var"
             return "E-mail должен быть в формате \"example@domain.com\".";
         } elseif (!$this->authManager->checkIfAuthorized() &&
-                   $this->studentDataGateway->getStudentByEmail($email)) {
+                   $this->studentDataGateway->checkIfEmailExists($email) !== 0) {
             return "Такой e-mail уже существует.";
         }
 

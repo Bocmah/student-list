@@ -42,7 +42,7 @@ class HomeController extends BaseController
     public function run()
     {
       if ($this->requestMethod === "GET") {
-          $this->processGetRequest();
+         $this->processGetRequest();
       }
     }
 }

@@ -68,17 +68,17 @@ class StudentDataGateway
 
     /**
      * @param string $email
-     * @return mixed
+     * @return int
      */
-    public function getStudentByEmail(string $email)
+    public function checkIfEmailExists(string $email): int
     {
         $statement = $this->pdo->prepare(
-            "SELECT * FROM students WHERE email=?"
+            "SELECT COUNT(*) FROM students WHERE email=?"
         );
         $statement->bindParam(1, $email, \PDO::PARAM_STR);
         $statement->execute();
 
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+        return (int)$statement->fetchColumn();
     }
 
     /**
