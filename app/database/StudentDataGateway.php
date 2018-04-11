@@ -94,14 +94,27 @@ class StudentDataGateway
         return (int)$statement->fetchColumn();
     }
 
-    public function getStudents(int $offset, int $limit)
+    public function getStudents(int $offset, int $limit, string $orderBy, string $sort)
     {
+        $orderWhiteList = ["name", "surname", "group_number", "exam_score"];
+
+        if (!in_array($orderBy, $orderWhiteList,true)) {
+            $orderBy = "exam_score";
+        }
+
+        if ($sort !== "DESC" && $sort !== "ASC") {
+            $sort = "ASC";
+        }
+
         $statement = $this->pdo->prepare(
-          "SELECT name, surname, group_number, exam_score
-                     FROM students
-                     LIMIT {$offset}, {$limit}   
+          "SELECT name, `surname`, `group_number`, `exam_score`
+                     FROM `students`
+                     ORDER BY $orderBy $sort
+                     LIMIT :offset, :limit
           "
         );
+        $statement->bindValue(":offset",$offset,\PDO::PARAM_INT);
+        $statement->bindValue(":limit", $limit, \PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll(\PDO::FETCH_ASSOC);

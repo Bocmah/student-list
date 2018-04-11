@@ -20,23 +20,49 @@ class HomeController extends BaseController
 
     private function processGetRequest()
     {
+        $pagination = $this->getPaginationInfo();
+
         if (!isset($_GET["search"])) {
-            $page = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
-            $perPage = 10;
-            $offset = $this->pager->calculatePositioning($page, $perPage);
-            $students = $this->studentDataGateway->getStudents($offset,$perPage);
-            $columnCount = $this->studentDataGateway->countTableRows();
-            $totalPages = $this->pager->calculateTotalPages($columnCount, $perPage);
+            $students = $this->studentDataGateway->getStudents(
+                    $pagination["offset"],
+                    $pagination["perPage"],
+                    $pagination["orderBy"],
+                    $pagination["sort"]
+            );
+            $rowCount = $this->studentDataGateway->countTableRows();
+            $totalPages = $this->pager->calculateTotalPages($rowCount, $pagination["perPage"]);
 
             $params["totalPages"] = $totalPages;
             $params["students"] = $students;
 
             $this->render(__DIR__."/../../views/home.view.php",$params);
         } else {
-            var_dump($_GET["search"]);
-            $res = $this->studentDataGateway->searchStudents($_GET["search"]);
-            var_dump($res);
+            $students = $this->studentDataGateway->searchStudents($_GET["search"]);
+            $rowCount = count($students);
+            $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
+
+            $params["totalPages"] = $totalPages;
+            $params["students"] = $students;
+
+            $this->render(__DIR__."/../../views/home.view.php",$params);
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getPaginationInfo(): array
+    {
+        $pagination["perPage"] = 10;
+        $pagination["page"] = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
+        $pagination["offset"] = $this->pager->calculatePositioning(
+            $pagination["page"],
+            $pagination["perPage"]
+        );
+        $pagination["orderBy"] = isset($_GET["order"]) ? strval($_GET["order"]) : "exam_score";
+        $pagination["sort"] = isset($_GET["sort"]) ? strval($_GET["sort"]) : "DESC";
+
+        return $pagination;
     }
 
     private function render($file, $params = [])
