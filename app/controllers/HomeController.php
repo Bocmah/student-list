@@ -17,7 +17,7 @@ class HomeController extends BaseController
         $this->pager = $pager;
         $this->studentDataGateway = $studentDataGateway;
     }
-
+    
     private function processGetRequest()
     {
         $pagination = $this->getPaginationInfo();
@@ -47,9 +47,15 @@ class HomeController extends BaseController
             );
             $rowCount = $this->studentDataGateway->countSearchRows($_GET["search"]);
             $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
+            $query = http_build_query(array(
+                    "search" => $_GET["search"],
+                    "order" => $pagination["orderBy"],
+                    "sort" => $pagination["sort"]
+            ));
 
             $params["totalPages"] = $totalPages;
             $params["students"] = $students;
+            $params["query"] = $query;
 
             $this->render(__DIR__."/../../views/home.view.php",$params);
         }
