@@ -37,7 +37,14 @@ class HomeController extends BaseController
 
             $this->render(__DIR__."/../../views/home.view.php",$params);
         } else {
-            $students = $this->studentDataGateway->searchStudents($_GET["search"]);
+            $students = $this->studentDataGateway->searchStudents(
+                    $_GET["search"],
+                    $pagination["offset"],
+                    $pagination["perPage"],
+                    $pagination["orderBy"],
+                    $pagination["sort"]
+
+            );
             $rowCount = count($students);
             $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
 

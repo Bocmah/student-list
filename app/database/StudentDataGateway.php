@@ -120,14 +120,28 @@ class StudentDataGateway
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function searchStudents(string $keywords)
+    public function searchStudents(string $keywords, int $offset, int $limit, string $orderBy, string $sort)
     {
+        $orderWhiteList = ["name", "surname", "group_number", "exam_score"];
+
+        if (!in_array($orderBy, $orderWhiteList,true)) {
+            $orderBy = "exam_score";
+        }
+
+        if ($sort !== "DESC" && $sort !== "ASC") {
+            $sort = "ASC";
+        }
+
         $statement = $this->pdo->prepare(
           "SELECT * FROM students
                      WHERE CONCAT(`name`,' ',`surname`,' ',`group_number`,' ',`exam_score`)
-                     LIKE :keywords"
+                     LIKE :keywords
+                     ORDER BY $orderBy $sort
+                     LIMIT :offset, :limit"
         );
         $statement->bindValue("keywords", "%".$keywords."%");
+        $statement->bindValue(":offset",$offset,\PDO::PARAM_INT);
+        $statement->bindValue(":limit", $limit, \PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
