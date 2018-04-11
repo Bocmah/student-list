@@ -109,20 +109,12 @@ class StudentDataGateway
 
     public function getStudents(int $offset, int $limit, string $orderBy, string $sort)
     {
-        $orderWhiteList = ["name", "surname", "group_number", "exam_score"];
-
-        if (!in_array($orderBy, $orderWhiteList,true)) {
-            $orderBy = "exam_score";
-        }
-
-        if ($sort !== "DESC" && $sort !== "ASC") {
-            $sort = "ASC";
-        }
+        $sortingParams = $this->sanitizeSortingParams($orderBy, $sort);
 
         $statement = $this->pdo->prepare(
           "SELECT `name`, `surname`, `group_number`, `exam_score`
                      FROM `students`
-                     ORDER BY $orderBy $sort
+                     ORDER BY {$sortingParams['orderBy']} {$sortingParams['sort']}
                      LIMIT :offset, :limit
           "
         );
@@ -135,6 +127,25 @@ class StudentDataGateway
 
     public function searchStudents(string $keywords, int $offset, int $limit, string $orderBy, string $sort)
     {
+        $sortingParams = $this->sanitizeSortingParams($orderBy, $sort);
+
+        $statement = $this->pdo->prepare(
+          "SELECT * FROM students
+                     WHERE CONCAT(`name`,' ',`surname`,' ',`group_number`,' ',`exam_score`)
+                     LIKE :keywords
+                     ORDER BY {$sortingParams['orderBy']} {$sortingParams['sort']}
+                     LIMIT :offset, :limit"
+        );
+        $statement->bindValue("keywords", "%".$keywords."%");
+        $statement->bindValue(":offset",$offset,\PDO::PARAM_INT);
+        $statement->bindValue(":limit", $limit, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    private function sanitizeSortingParams(string $orderBy, string $sort)
+    {
         $orderWhiteList = ["name", "surname", "group_number", "exam_score"];
 
         if (!in_array($orderBy, $orderWhiteList,true)) {
@@ -145,19 +156,12 @@ class StudentDataGateway
             $sort = "ASC";
         }
 
-        $statement = $this->pdo->prepare(
-          "SELECT * FROM students
-                     WHERE CONCAT(`name`,' ',`surname`,' ',`group_number`,' ',`exam_score`)
-                     LIKE :keywords
-                     ORDER BY $orderBy $sort
-                     LIMIT :offset, :limit"
+        $sortingParams = array(
+            "sort" => $sort,
+            "orderBy" => $orderBy
         );
-        $statement->bindValue("keywords", "%".$keywords."%");
-        $statement->bindValue(":offset",$offset,\PDO::PARAM_INT);
-        $statement->bindValue(":limit", $limit, \PDO::PARAM_INT);
-        $statement->execute();
 
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $sortingParams;
     }
 
     /**
