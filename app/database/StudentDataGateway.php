@@ -87,8 +87,21 @@ class StudentDataGateway
     public function countTableRows(): int
     {
         $statement = $this->pdo->prepare(
-            "SELECT count(*) FROM students"
+            "SELECT COUNT(*) FROM students"
         );
+        $statement->execute();
+
+        return (int)$statement->fetchColumn();
+    }
+
+    public function countSearchRows(string $keywords): int
+    {
+        $statement = $this->pdo->prepare(
+          "SELECT COUNT(*) FROM students
+                     WHERE CONCAT(`name`,' ',`surname`,' ',`group_number`,' ',`exam_score`)
+                     LIKE :keywords"
+        );
+        $statement->bindValue("keywords", "%".$keywords."%");
         $statement->execute();
 
         return (int)$statement->fetchColumn();
@@ -107,7 +120,7 @@ class StudentDataGateway
         }
 
         $statement = $this->pdo->prepare(
-          "SELECT name, `surname`, `group_number`, `exam_score`
+          "SELECT `name`, `surname`, `group_number`, `exam_score`
                      FROM `students`
                      ORDER BY $orderBy $sort
                      LIMIT :offset, :limit
