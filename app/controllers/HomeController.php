@@ -50,7 +50,7 @@ class HomeController extends BaseController
             );
             $rowCount = $this->studentDataGateway->countSearchRows($search);
             $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
-            
+
             $params = compact("search", "order", "direction", "totalPages", "students");
 
             $this->render(__DIR__."/../../views/home.view.php",$params);

@@ -24,6 +24,26 @@ class UrlManager
         );
     }
 
+    public static function getSortingLink(int $page,
+                                          string $order,
+                                          string $currentOrder,
+                                          string $direction,
+                                          string $search = null)
+    {
+        if ($order === $currentOrder && $direction === "DESC") {
+            $direction = "ASC";
+        } else {
+            $direction = "DESC"; 
+        }
+
+        return http_build_query(array(
+           "page" => $page,
+           "order" => $order,
+           "direction" => $direction,
+           "search" => $search
+        ));
+    }
+
     public function redirect(string $path)
     {
         header("Location: {$path}");
