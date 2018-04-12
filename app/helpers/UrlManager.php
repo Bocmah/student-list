@@ -14,6 +14,16 @@ class UrlManager
         return $_SERVER["REQUEST_METHOD"];
     }
 
+    public static function getPaginationLink(string $order, string $direction, string $search = null)
+    {
+        echo "&".http_build_query(array(
+            "order" => $order,
+            "direction" => $direction,
+            "search" => $search
+            )
+        );
+    }
+
     public function redirect(string $path)
     {
         header("Location: {$path}");

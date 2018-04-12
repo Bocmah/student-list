@@ -26,8 +26,8 @@ class HomeController extends BaseController
             $students = $this->studentDataGateway->getStudents(
                     $pagination["offset"],
                     $pagination["perPage"],
-                    $pagination["orderBy"],
-                    $pagination["sort"]
+                    $pagination["order"],
+                    $pagination["direction"]
             );
             $rowCount = $this->studentDataGateway->countTableRows();
             $totalPages = $this->pager->calculateTotalPages($rowCount, $pagination["perPage"]);
@@ -41,16 +41,16 @@ class HomeController extends BaseController
                     $_GET["search"],
                     $pagination["offset"],
                     $pagination["perPage"],
-                    $pagination["orderBy"],
-                    $pagination["sort"]
+                    $pagination["order"],
+                    $pagination["direction"]
 
             );
             $rowCount = $this->studentDataGateway->countSearchRows($_GET["search"]);
             $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
             $query = http_build_query(array(
                     "search" => $_GET["search"],
-                    "order" => $pagination["orderBy"],
-                    "sort" => $pagination["sort"]
+                    "order" => $pagination["order"],
+                    "direction" => $pagination["direction"]
             ));
 
             $params["totalPages"] = $totalPages;
@@ -72,8 +72,8 @@ class HomeController extends BaseController
             $pagination["page"],
             $pagination["perPage"]
         );
-        $pagination["orderBy"] = isset($_GET["order"]) ? strval($_GET["order"]) : "exam_score";
-        $pagination["sort"] = isset($_GET["sort"]) ? strval($_GET["sort"]) : "DESC";
+        $pagination["order"] = isset($_GET["order"]) ? strval($_GET["order"]) : "exam_score";
+        $pagination["direction"] = isset($_GET["direction"]) ? strval($_GET["direction"]) : "DESC";
 
         return $pagination;
     }
