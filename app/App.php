@@ -3,10 +3,15 @@ namespace StudentList;
 
 class App
 {
+    /**
+     * @var array
+     */
     private $dependencies = [];
 
     /**
-     * @param $key
+     * Binds dependency using $dependencies array
+     *
+     * @param string $key
      * @param $value
      */
     public function bind($key, $value)
@@ -15,8 +20,13 @@ class App
     }
 
     /**
+     * Returns dependency from $dependencies array
+     * Throws an exception if dependency is not found
+     *
      * @param string $key
+     *
      * @return mixed
+     *
      * @throws \Exception
      */
     public function get(string $key)

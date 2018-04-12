@@ -7,17 +7,35 @@ use StudentList\Database\StudentDataGateway;
 
 class StudentValidator
 {
+    /**
+     * @var StudentDataGateway
+     */
     private $studentDataGateway;
+
+    /**
+     * @var AuthManager
+     */
     private $authManager;
 
+    /**
+     * StudentValidator constructor.
+     * @param StudentDataGateway $studentDataGateway
+     * @param AuthManager $authManager
+     */
     public function __construct(StudentDataGateway $studentDataGateway, AuthManager $authManager)
     {
-        // Injecting StudentDataGateway and AuthManager for assistance with email validation
         $this->studentDataGateway = $studentDataGateway;
         $this->authManager = $authManager;
 
     }
 
+    /**
+     * Returns an array of validation errors
+     *
+     * @param Student $student
+     *
+     * @return array
+     */
     public function validateAllFields(Student $student)
     {
         $errors = array();
@@ -39,6 +57,7 @@ class StudentValidator
 
     /**
      * @param string $name
+     *
      * @return bool|string
      */
     private function validateName(string $name)
@@ -61,6 +80,7 @@ class StudentValidator
 
     /**
      * @param string $surname
+     *
      * @return bool|string
      */
     private function validateSurname(string $surname)
@@ -83,6 +103,7 @@ class StudentValidator
 
     /**
      * @param string $gender
+     *
      * @return bool|string
      */
     private function validateGender(string $gender)
@@ -96,6 +117,7 @@ class StudentValidator
 
     /**
      * @param string $groupNumber
+     *
      * @return bool|string
      */
     private function validateGroupNumber(string $groupNumber)
@@ -118,6 +140,7 @@ class StudentValidator
 
     /**
      * @param int $examScore
+     *
      * @return bool|string
      */
     private function validateExamScore(int $examScore)
@@ -130,6 +153,7 @@ class StudentValidator
 
     /**
      * @param string $email
+     *
      * @return bool|string
      */
     private function validateEmail(string $email)
@@ -149,6 +173,7 @@ class StudentValidator
 
     /**
      * @param int $birthYear
+     *
      * @return bool|string
      */
     private function validateBirthYear(int $birthYear)
@@ -162,6 +187,7 @@ class StudentValidator
 
     /**
      * @param string $residence
+     *
      * @return bool|string
      */
     private function validateResidence(string $residence)

@@ -9,6 +9,8 @@ class Router
     private $routes = [];
 
     /**
+     * Defines legit routes
+     *
      * @param array $routes
      */
     public function define(array $routes)
@@ -17,8 +19,12 @@ class Router
     }
 
     /**
+     * Invokes ControllerFactory in order to return required controller to handle the request
+     *
      * @param App $DIContainer
+     *
      * @return null|Controllers\HomeController|Controllers\RegisterController
+     *
      * @throws \Exception
      */
     public function getController(App $DIContainer)
