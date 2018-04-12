@@ -153,7 +153,7 @@ class StudentDataGateway
         }
 
         if ($sort !== "DESC" && $sort !== "ASC") {
-            $sort = "ASC";
+            $sort = "DESC";
         }
 
         $sortingParams = array(

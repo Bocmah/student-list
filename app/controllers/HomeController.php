@@ -21,8 +21,11 @@ class HomeController extends BaseController
     private function processGetRequest()
     {
         $pagination = $this->getPaginationInfo();
+        $order = $pagination["order"];
+        $direction = $pagination["direction"];
 
         if (!isset($_GET["search"])) {
+            $search = null;
             $students = $this->studentDataGateway->getStudents(
                     $pagination["offset"],
                     $pagination["perPage"],
@@ -32,30 +35,23 @@ class HomeController extends BaseController
             $rowCount = $this->studentDataGateway->countTableRows();
             $totalPages = $this->pager->calculateTotalPages($rowCount, $pagination["perPage"]);
 
-            $params["totalPages"] = $totalPages;
-            $params["students"] = $students;
+            $params = compact("totalPages", "students", "order", "direction", "search");
 
             $this->render(__DIR__."/../../views/home.view.php",$params);
         } else {
+            $search = $_GET["search"];
             $students = $this->studentDataGateway->searchStudents(
-                    $_GET["search"],
+                    $search,
                     $pagination["offset"],
                     $pagination["perPage"],
                     $pagination["order"],
                     $pagination["direction"]
 
             );
-            $rowCount = $this->studentDataGateway->countSearchRows($_GET["search"]);
+            $rowCount = $this->studentDataGateway->countSearchRows($search);
             $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
-            $query = http_build_query(array(
-                    "search" => $_GET["search"],
-                    "order" => $pagination["order"],
-                    "direction" => $pagination["direction"]
-            ));
-
-            $params["totalPages"] = $totalPages;
-            $params["students"] = $students;
-            $params["query"] = $query;
+            
+            $params = compact("search", "order", "direction", "totalPages", "students");
 
             $this->render(__DIR__."/../../views/home.view.php",$params);
         }

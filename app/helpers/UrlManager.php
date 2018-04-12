@@ -16,10 +16,10 @@ class UrlManager
 
     public static function getPaginationLink(string $order, string $direction, string $search = null)
     {
-        echo "&".http_build_query(array(
-            "order" => $order,
-            "direction" => $direction,
-            "search" => $search
+        return http_build_query(array(
+                "order" => $order,
+                "direction" => $direction,
+                "search" => $search
             )
         );
     }
