@@ -23,6 +23,7 @@ class HomeController extends BaseController
         $pagination = $this->getPaginationInfo();
         $order = $pagination["order"];
         $direction = $pagination["direction"];
+        $page = $pagination["page"];
 
         if (!isset($_GET["search"])) {
             $search = null;
@@ -35,7 +36,7 @@ class HomeController extends BaseController
             $rowCount = $this->studentDataGateway->countTableRows();
             $totalPages = $this->pager->calculateTotalPages($rowCount, $pagination["perPage"]);
 
-            $params = compact("totalPages", "students", "order", "direction", "search");
+            $params = compact("totalPages", "students", "order", "direction", "search", "page");
 
             $this->render(__DIR__."/../../views/home.view.php",$params);
         } else {
@@ -51,7 +52,7 @@ class HomeController extends BaseController
             $rowCount = $this->studentDataGateway->countSearchRows($search);
             $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
 
-            $params = compact("search", "order", "direction", "totalPages", "students");
+            $params = compact("search", "order", "direction", "totalPages", "students", "page");
 
             $this->render(__DIR__."/../../views/home.view.php",$params);
         }

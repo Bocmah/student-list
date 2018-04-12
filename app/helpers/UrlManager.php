@@ -33,7 +33,7 @@ class UrlManager
         if ($order === $currentOrder && $direction === "DESC") {
             $direction = "ASC";
         } else {
-            $direction = "DESC"; 
+            $direction = "DESC";
         }
 
         return http_build_query(array(
