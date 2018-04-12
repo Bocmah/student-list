@@ -5,6 +5,13 @@ use StudentList\App;
 
 class ControllerFactory
 {
+    /**
+     * @param string $controllerName
+     * @param string $requestMethod
+     * @param string $action
+     * @param App $DIContainer
+     * @return null|HomeController|ProfileController|RegisterController
+     */
     public static function makeController(string $controllerName,
                                           string $requestMethod,
                                           string $action,

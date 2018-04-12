@@ -6,9 +6,22 @@ use StudentList\Helpers\Pager;
 
 class HomeController extends BaseController
 {
+    /**
+     * @var Pager
+     */
     private $pager;
+
+    /**
+     * @var StudentDataGateway
+     */
     private $studentDataGateway;
 
+    /**
+     * HomeController constructor.
+     * @param string $requestMethod
+     * @param Pager $pager
+     * @param StudentDataGateway $studentDataGateway
+     */
     public function __construct(string $requestMethod,
                                 Pager $pager,
                                 StudentDataGateway $studentDataGateway)
@@ -59,6 +72,8 @@ class HomeController extends BaseController
     }
 
     /**
+     * Returns an array of parameters required for implementing pagination
+     *
      * @return array
      */
     private function getPaginationInfo(): array

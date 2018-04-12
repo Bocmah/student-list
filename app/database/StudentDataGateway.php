@@ -5,15 +5,23 @@ use StudentList\Entities\Student;
 
 class StudentDataGateway
 {
+    /**
+     * @var \PDO
+     */
     private $pdo;
 
-    // Getting pdo object to work with
+    /**
+     * StudentDataGateway constructor.
+     * @param \PDO $pdo
+     */
     public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
     /**
+     * Inserts new Student into `students` table
+     *
      * @param Student $student
      */
     public function insertStudent(Student $student)
@@ -37,6 +45,8 @@ class StudentDataGateway
     }
 
     /**
+     * Updates a student row in `students` table
+     *
      * @param Student $student
      */
     public function updateStudent(Student $student)
@@ -67,7 +77,10 @@ class StudentDataGateway
     }
 
     /**
+     * Returns a number of records found containing $email
+     *
      * @param string $email
+     *
      * @return int
      */
     public function checkIfEmailExists(string $email): int
@@ -82,6 +95,8 @@ class StudentDataGateway
     }
 
     /**
+     * Returns a number of rows in the `students` table
+     *
      * @return int
      */
     public function countTableRows(): int
@@ -94,6 +109,13 @@ class StudentDataGateway
         return (int)$statement->fetchColumn();
     }
 
+    /**
+     * Returns a number of rows containing $keywords
+     *
+     * @param string $keywords
+     *
+     * @return int
+     */
     public function countSearchRows(string $keywords): int
     {
         $statement = $this->pdo->prepare(
@@ -107,6 +129,16 @@ class StudentDataGateway
         return (int)$statement->fetchColumn();
     }
 
+    /**
+     * Returns an array of student rows
+     *
+     * @param int $offset
+     * @param int $limit
+     * @param string $orderBy Field to order by
+     * @param string $sort Ordering direction
+     *
+     * @return array
+     */
     public function getStudents(int $offset, int $limit, string $orderBy, string $sort)
     {
         $sortingParams = $this->sanitizeSortingParams($orderBy, $sort);
@@ -125,6 +157,17 @@ class StudentDataGateway
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Returns an array of student rows found by $keywords
+     *
+     * @param string $keywords String to search for
+     * @param int $offset
+     * @param int $limit
+     * @param string $orderBy Field to order by
+     * @param string $sort Ordering direction
+     *
+     * @return array
+     */
     public function searchStudents(string $keywords, int $offset, int $limit, string $orderBy, string $sort)
     {
         $sortingParams = $this->sanitizeSortingParams($orderBy, $sort);
@@ -144,6 +187,14 @@ class StudentDataGateway
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Makes sure that ordering parameters don't contain something apart from whitelisted values
+     *
+     * @param string $orderBy Field to order by
+     * @param string $sort Ordering direction
+     *
+     * @return array
+     */
     private function sanitizeSortingParams(string $orderBy, string $sort)
     {
         $orderWhiteList = ["name", "surname", "group_number", "exam_score"];
@@ -165,7 +216,10 @@ class StudentDataGateway
     }
 
     /**
+     * Returns a student row containing $hash
+     *
      * @param string $hash
+     *
      * @return mixed
      */
     public function getStudentByHash(string $hash)

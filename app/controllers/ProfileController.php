@@ -9,12 +9,41 @@ use StudentList\Validators\StudentValidator;
 
 class ProfileController extends BaseController
 {
+    /**
+     * @var StudentDataGateway
+     */
     private $gateway;
+
+    /**
+     * @var StudentValidator
+     */
     private $validator;
+
+    /**
+     * @var AuthManager
+     */
     private $authManager;
+
+    /**
+     * @var Util
+     */
     private $util;
+
+    /**
+     * @var UrlManager
+     */
     private $urlManager;
 
+    /**
+     * ProfileController constructor.
+     * @param string $requestMethod
+     * @param string $action
+     * @param StudentDataGateway $studentDataGateway
+     * @param StudentValidator $studentValidator
+     * @param AuthManager $authManager
+     * @param Util $util
+     * @param UrlManager $urlManager
+     */
     public function __construct(string $requestMethod,
                                 string $action,
                                 StudentDataGateway $studentDataGateway,
@@ -65,7 +94,12 @@ class ProfileController extends BaseController
         }
     }
 
-    private function grabPostValues()
+    /**
+     * Returns an array of sanitized $_POST values
+     *
+     * @return array
+     */
+    private function grabPostValues(): array
     {
         $values = [];
 

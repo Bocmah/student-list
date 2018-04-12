@@ -10,12 +10,40 @@ use StudentList\Helpers\{Util, UrlManager};
 
 class RegisterController extends BaseController
 {
+    /**
+     * @var StudentDataGateway
+     */
     private $gateway;
+
+    /**
+     * @var StudentValidator
+     */
     private $validator;
+
+    /**
+     * @var Util
+     */
     private $util;
+
+    /**
+     * @var AuthManager
+     */
     private $authManager;
+
+    /**
+     * @var UrlManager
+     */
     private $urlManager;
 
+    /**
+     * RegisterController constructor.
+     * @param string $requestMethod
+     * @param StudentDataGateway $gateway
+     * @param StudentValidator $validator
+     * @param Util $util
+     * @param AuthManager $authManager
+     * @param UrlManager $urlManager
+     */
     public function __construct(string $requestMethod,
                                 StudentDataGateway $gateway,
                                 StudentValidator $validator,
@@ -58,6 +86,11 @@ class RegisterController extends BaseController
 
     }
 
+    /**
+     * Returns an array of sanitized $_POST values
+     *
+     * @return array
+     */
     private function grabPostValues()
     {
         $values = [];
