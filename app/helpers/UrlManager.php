@@ -28,12 +28,14 @@ class UrlManager
      * @param string $order Order passed into view
      * @param string $direction
      * @param string|null $search
+     * @param int|null $page Current page
      *
      * @return string
      */
-    public static function getPaginationLink(string $order, string $direction, string $search = null)
+    public static function getPaginationLink(string $order, string $direction, string $search = null, int $page = null)
     {
         return http_build_query(array(
+                "page" => $page,
                 "order" => $order,
                 "direction" => $direction,
                 "search" => $search

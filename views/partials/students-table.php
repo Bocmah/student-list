@@ -50,6 +50,16 @@
     </tbody>
     </table>
     <ul class="uk-pagination uk-flex-center">
+        <?php if ($page > 1): ?>
+            <li><a href="?<?php echo htmlspecialchars(UrlManager::getPaginationLink(
+                    $order,
+                    $direction,
+                    $search,
+                    $page - 1
+                ), ENT_QUOTES); ?>"><span uk-pagination-previous></span></a></li>
+        <?php else: ?>
+            <li class="uk-disabled"><a><span uk-pagination-previous></span></a></li>
+        <?php endif; ?>
         <?php for($i = 1; $i <= $totalPages; $i++): ?>
             <li>
                 <a href="?page=<?php echo "{$i}" . "&" . htmlspecialchars(UrlManager::getPaginationLink(
@@ -59,5 +69,15 @@
                     ), ENT_QUOTES); ?>"><?php echo $i; ?></a>
             </li>
         <?php endfor; ?>
+        <?php if ($page < $totalPages): ?>
+            <li><a href="?<?php echo htmlspecialchars(UrlManager::getPaginationLink(
+                    $order,
+                    $direction,
+                    $search,
+                    $page + 1
+                ), ENT_QUOTES); ?>"><span uk-pagination-next></span></a></li>
+        <?php else: ?>
+            <li class="uk-disabled"><a><span uk-pagination-next></span></a></li>
+        <?php endif; ?>
     </ul>
 </div>
