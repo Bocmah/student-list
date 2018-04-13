@@ -61,13 +61,17 @@
             <li class="uk-disabled"><a><span uk-pagination-previous></span></a></li>
         <?php endif; ?>
         <?php for($i = 1; $i <= $totalPages; $i++): ?>
-            <li>
-                <a href="?page=<?php echo "{$i}" . "&" . htmlspecialchars(UrlManager::getPaginationLink(
-                        $order,
-                        $direction,
-                        $search
-                    ), ENT_QUOTES); ?>"><?php echo $i; ?></a>
-            </li>
+            <?php if($i === $page): ?>
+                <li class="uk-active"><span class="uk-text-primary"><?php echo $i; ?></span></li>
+            <?php else: ?>
+                <li>
+                    <a href="?page=<?php echo "{$i}" . "&" . htmlspecialchars(UrlManager::getPaginationLink(
+                            $order,
+                            $direction,
+                            $search
+                        ), ENT_QUOTES); ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endif; ?>
         <?php endfor; ?>
         <?php if ($page < $totalPages): ?>
             <li><a href="?<?php echo htmlspecialchars(UrlManager::getPaginationLink(
