@@ -130,7 +130,7 @@ class StudentValidator
             return "Вы не заполнили обязательное поле \"Номер группы\"";
         } elseif ($groupNumberLength < 2 || $groupNumberLength > 5) {
             return "Количество символов в номере группы должно находиться
-                    в интервале от 2 до 5, а Вы ввели {$groupNumberLength}";
+                    в интервале от 2 до 5, а Вы ввели {$groupNumberLength}.";
         } elseif ( !(preg_match($pattern, $groupNumber)) ) {
             return "Номер группы может содержать только цифры и русские буквы.";
         }
@@ -145,8 +145,8 @@ class StudentValidator
      */
     private function validateExamScore(int $examScore)
     {
-        if ($examScore < 90 || $examScore > 300) {
-            return "Баллы ЕГЭ должны находиться в интервале от 90 до 300 включительно.";
+        if ($examScore < 50 || $examScore > 300) {
+            return "Баллы ЕГЭ должны находиться в интервале от 50 до 300 включительно.";
         }
         return true;
     }

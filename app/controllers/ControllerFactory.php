@@ -25,7 +25,8 @@ class ControllerFactory
                 $controller = new HomeController(
                     $requestMethod,
                     $DIContainer->get("pager"),
-                    $DIContainer->get("studentDataGateway")
+                    $DIContainer->get("studentDataGateway"),
+                    $DIContainer->get("authManager")
                 );
                 break;
             case "RegisterController":

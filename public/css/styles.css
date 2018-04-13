@@ -1,0 +1,15 @@
+.students-table {
+    text-align: center;
+}
+
+.students-table th {
+    text-align: center;
+}
+
+.student-form__field--margin-top {
+    margin-top: 10px;
+}
+
+.error-text {
+    color: #f0506e;
+}

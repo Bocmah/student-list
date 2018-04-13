@@ -3,6 +3,7 @@ namespace StudentList\Controllers;
 
 use StudentList\Database\StudentDataGateway;
 use StudentList\Helpers\Pager;
+use StudentList\AuthManager;
 
 class HomeController extends BaseController
 {
@@ -17,18 +18,27 @@ class HomeController extends BaseController
     private $studentDataGateway;
 
     /**
+     * @var AuthManager
+     */
+    private $authManager;
+
+
+    /**
      * HomeController constructor.
      * @param string $requestMethod
      * @param Pager $pager
      * @param StudentDataGateway $studentDataGateway
+     * @param AuthManager $authManager
      */
     public function __construct(string $requestMethod,
                                 Pager $pager,
-                                StudentDataGateway $studentDataGateway)
+                                StudentDataGateway $studentDataGateway,
+                                AuthManager $authManager)
     {
         $this->requestMethod = $requestMethod;
         $this->pager = $pager;
         $this->studentDataGateway = $studentDataGateway;
+        $this->authManager = $authManager;
     }
     
     private function processGetRequest()
