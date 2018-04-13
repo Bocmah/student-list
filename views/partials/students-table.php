@@ -1,4 +1,9 @@
 <?php use StudentList\Helpers\UrlManager; ?>
+<?php if($search): ?>
+    <p>По вашему запросу "<?php echo htmlspecialchars($search, ENT_QUOTES); ?>"
+        найдено <?php echo htmlspecialchars($rowCount, ENT_QUOTES); ?> результатов.
+        <a href="/">Посмотреть всех студентов.</a></p>
+<?php endif; ?>
 <table>
     <thead>
         <tr>
@@ -8,28 +13,28 @@
                     $order,
                     $direction,
                     $search
-                ), ENT_QUOTES) ?>">Имя</a></th>
+                ), ENT_QUOTES); ?>">Имя</a></th>
             <th><a href="?<?php echo htmlspecialchars(UrlManager::getSortingLink(
                     $page,
                     "surname",
                     $order,
                     $direction,
                     $search
-                ), ENT_QUOTES) ?>">Фамилия</a></th>
+                ), ENT_QUOTES); ?>">Фамилия</a></th>
             <th><a href="?<?php echo htmlspecialchars(UrlManager::getSortingLink(
                     $page,
                     "group_number",
                     $order,
                     $direction,
                     $search
-                ), ENT_QUOTES) ?>">Номер группы</a></th>
+                ), ENT_QUOTES); ?>">Номер группы</a></th>
             <th><a href="?<?php echo htmlspecialchars(UrlManager::getSortingLink(
                     $page,
                     "exam_score",
                     $order,
                     $direction,
                     $search
-                ), ENT_QUOTES) ?>">Баллы ЕГЭ</a></th>
+                ), ENT_QUOTES); ?>">Баллы ЕГЭ</a></th>
         </tr>
     </thead>
     <tbody>
