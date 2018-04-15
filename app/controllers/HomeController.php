@@ -22,65 +22,45 @@ class HomeController extends BaseController
      */
     private $authManager;
 
+    /**
+     * @var array
+     */
+    private $paginationInfo;
+
+    /**
+     * @var
+     */
+    private $notify;
 
     /**
      * HomeController constructor.
      * @param string $requestMethod
+     * @param string $action
      * @param Pager $pager
      * @param StudentDataGateway $studentDataGateway
      * @param AuthManager $authManager
      */
     public function __construct(string $requestMethod,
+                                string $action,
                                 Pager $pager,
                                 StudentDataGateway $studentDataGateway,
                                 AuthManager $authManager)
     {
         $this->requestMethod = $requestMethod;
+        $this->action = $action;
         $this->pager = $pager;
         $this->studentDataGateway = $studentDataGateway;
         $this->authManager = $authManager;
+        $this->paginationInfo = $this->getPaginationInfo();
+        $this->notify = isset($_GET["notify"]) ? $_GET["notify"] : null;
     }
-    
-    private function processGetRequest()
+
+    private function index()
     {
-        $pagination = $this->getPaginationInfo();
-        $order = $pagination["order"];
-        $direction = $pagination["direction"];
-        $page = $pagination["page"];
-        $notify = isset($_GET["notify"]) ? $_GET["notify"] : null;
-
-        if (!isset($_GET["search"])) {
-            $search = null;
-            $students = $this->studentDataGateway->getStudents(
-                    $pagination["offset"],
-                    $pagination["perPage"],
-                    $pagination["order"],
-                    $pagination["direction"]
-            );
-            $rowCount = $this->studentDataGateway->countTableRows();
-            $totalPages = $this->pager->calculateTotalPages($rowCount, $pagination["perPage"]);
-
-            $params = compact("totalPages", "students", "order", "direction", "search", "page", "notify");
-
-            $this->render(__DIR__."/../../views/home.view.php",$params);
+        if (isset($_GET["search"])) {
+            $this->showSearchResults();
         } else {
-            $search = $_GET["search"];
-            $students = $this->studentDataGateway->searchStudents(
-                    $search,
-                    $pagination["offset"],
-                    $pagination["perPage"],
-                    $pagination["order"],
-                    $pagination["direction"]
-
-            );
-            $rowCount = $this->studentDataGateway->countSearchRows($search);
-            $totalPages = $this->pager->calculateTotalPages($rowCount,$pagination["perPage"]);
-
-            $params = compact(
-                "search", "order", "direction", "totalPages", "students", "page", "notify", "rowCount"
-            );
-
-            $this->render(__DIR__."/../../views/home.view.php",$params);
+            $this->showStudentsTable();
         }
     }
 
@@ -103,16 +83,72 @@ class HomeController extends BaseController
         return $pagination;
     }
 
-    private function render($file, $params = [])
+    /**
+     * Renders table containing all students
+     */
+    private function showStudentsTable()
     {
-        extract($params,EXTR_SKIP);
-        return require_once "{$file}";
+        $search = null;
+        $order = $this->paginationInfo["order"];
+        $direction = $this->paginationInfo["direction"];
+        $page = $this->paginationInfo["page"];
+        $notify = $this->notify;
+        $students = $this->studentDataGateway->getStudents(
+            $this->paginationInfo["offset"],
+            $this->paginationInfo["perPage"],
+            $order,
+            $direction
+        );
+        $rowCount = $this->studentDataGateway->countTableRows();
+        $totalPages = $this->pager->calculateTotalPages(
+            $rowCount,
+            $this->paginationInfo["perPage"]
+        );
+
+        $params = compact(
+            "totalPages", "students", "order", "direction", "search", "page", "notify"
+        );
+
+        $this->render(__DIR__."/../../views/home.view.php",$params);
     }
 
+    /**
+     * Renders table containing search results
+     */
+    private function showSearchResults()
+    {
+        $search = $_GET["search"];
+        $order = $this->paginationInfo["order"];
+        $direction = $this->paginationInfo["direction"];
+        $page = $this->paginationInfo["page"];
+        $notify = $this->notify;
+        $students = $this->studentDataGateway->searchStudents(
+            $search,
+            $this->paginationInfo["offset"],
+            $this->paginationInfo["perPage"],
+            $order,
+            $direction
+        );
+        $rowCount = $this->studentDataGateway->countSearchRows($search);
+        $totalPages = $this->pager->calculateTotalPages(
+            $rowCount,
+            $this->paginationInfo["perPage"]
+        );
+
+        $params = compact(
+            "search", "order", "direction", "totalPages", "students", "page", "notify", "rowCount"
+        );
+
+        $this->render(__DIR__."/../../views/home.view.php",$params);
+    }
+
+    /**
+     * Invokes controller's action based on $action property
+     */
     public function run()
     {
-      if ($this->requestMethod === "GET") {
-         $this->processGetRequest();
-      }
+      $action = $this->action;
+
+      $this->$action();
     }
 }

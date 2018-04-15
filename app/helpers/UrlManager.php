@@ -4,14 +4,15 @@ namespace StudentList\Helpers;
 class UrlManager
 {
     /**
-     * Returns parsed URI exploded by "/"
+     * Returns parsed URI
      *
      * @return array
      */
     public function getUri()
     {
-        $parsedUri = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH),"/");
-        return explode("/", $parsedUri);
+        return trim(
+            parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH),"/"
+        );
     }
 
     /**

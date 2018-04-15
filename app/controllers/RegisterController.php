@@ -38,6 +38,7 @@ class RegisterController extends BaseController
     /**
      * RegisterController constructor.
      * @param string $requestMethod
+     * @param string $action
      * @param StudentDataGateway $gateway
      * @param StudentValidator $validator
      * @param Util $util
@@ -45,6 +46,7 @@ class RegisterController extends BaseController
      * @param UrlManager $urlManager
      */
     public function __construct(string $requestMethod,
+                                string $action,
                                 StudentDataGateway $gateway,
                                 StudentValidator $validator,
                                 Util $util,
@@ -52,6 +54,7 @@ class RegisterController extends BaseController
                                 UrlManager $urlManager)
     {
         $this->requestMethod = $requestMethod;
+        $this->action = $action;
         $this->gateway = $gateway;
         $this->validator = $validator;
         $this->util = $util;
@@ -59,13 +62,20 @@ class RegisterController extends BaseController
         $this->urlManager = $urlManager;
     }
 
-    private function processGetRequest()
+    /**
+     * Index action.
+     * Renders registration form
+     */
+    private function index()
     {
-        $params["formAction"] = "register";
-        $this->render(__DIR__."/../../views/register.view.php", $params);
+        $this->render(__DIR__."/../../views/register.view.php");
     }
 
-    private function processPostRequest()
+    /**
+     * Store action.
+     * Storing new student in the database
+     */
+    private function store()
     {
         $values = $this->grabPostValues();
         $student = $this->util->createStudent($values);
@@ -83,7 +93,6 @@ class RegisterController extends BaseController
             $params["errors"] = $errors;
             $this->render(__DIR__."/../../views/register.view.php", $params);
         }
-
     }
 
     /**
@@ -123,26 +132,22 @@ class RegisterController extends BaseController
         return $values;
     }
 
-    private function render($file, $params = [])
-    {
-        extract($params,EXTR_SKIP);
-        return require_once "{$file}";
-    }
 
+    /**
+     * Redirecting to /profile if user is not authorized
+     * Invokes controller's action based on $action property
+     */
     public function run()
     {
-        // Check if user is not logged in first
+        // Checking if user is not logged in first
         if ($this->authManager->checkIfAuthorized()) {
-            // If he is we redirect to the profile page
-            // $this->urlManager->redirect("/");
+            // If he is redirecting to the profile page
             $this->urlManager->redirect("/profile");
         }
 
-        if ($this->requestMethod === "GET") {
-            $this->processGetRequest();
-        } else {
-            $this->processPostRequest();
-        }
+        $action = $this->action;
+
+        $this->$action();
     }
 }
 

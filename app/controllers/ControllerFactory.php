@@ -12,8 +12,8 @@ class ControllerFactory
      * @param App $DIContainer
      * @return null|HomeController|ProfileController|RegisterController
      */
-    public static function makeController(string $controllerName,
-                                          string $requestMethod,
+    public static function makeController(string $requestMethod,
+                                          string $controllerName,
                                           string $action,
                                           App $DIContainer)
     {
@@ -24,6 +24,7 @@ class ControllerFactory
             case "HomeController":
                 $controller = new HomeController(
                     $requestMethod,
+                    $action,
                     $DIContainer->get("pager"),
                     $DIContainer->get("studentDataGateway"),
                     $DIContainer->get("authManager")
@@ -32,6 +33,7 @@ class ControllerFactory
             case "RegisterController":
                 $controller = new RegisterController(
                     $requestMethod,
+                    $action,
                     $DIContainer->get("studentDataGateway"),
                     $DIContainer->get("studentValidator"),
                     $DIContainer->get("util"),

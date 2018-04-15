@@ -61,36 +61,46 @@ class ProfileController extends BaseController
         $this->util = $util;
     }
 
-    private function processGetRequest()
+    /**
+     * Index action.
+     * Showing student's profile
+     */
+    private function index()
     {
-        // Fetching student data from the database and preparing it for passing into view
+        $this->showProfile();
+    }
+
+    /**
+     * ShowEdit action.
+     * Showing editing form
+     */
+    private function showEdit()
+    {
         $studentData = $this->gateway->getStudentByHash($_COOKIE["hash"]);
         $params["values"] = $studentData;
 
-        if ($this->action === "edit") {
-            $this->render(__DIR__."/../../views/register.view.php", $params);
-        } else {
-            $this->render(__DIR__."/../../views/profile.view.php", $params);
-        }
+        $this->render(__DIR__."/../../views/register.view.php", $params);
     }
 
-    private function processPostRequest()
+    /**
+     * Store action.
+     * Updates student if fields are validated. Re-renders editing form otherwise
+     */
+    private function store()
     {
-        if ($this->action === "edit") {
-            $values = $this->grabPostValues();
-            $student = $this->util->createStudent($values);
-            $errors = $this->validator->validateAllFields($student);
-            $student->setHash($_COOKIE["hash"]);
+        $values = $this->grabPostValues();
+        $student = $this->util->createStudent($values);
+        $errors = $this->validator->validateAllFields($student);
+        $student->setHash($_COOKIE["hash"]);
 
-            if (empty($errors)) {
-                $this->gateway->updateStudent($student);
-                $this->urlManager->redirect("/?notify=1");
-            } else {
-                // Re-render the form passing $errors and $values arrays
-                $params["values"] = $values;
-                $params["errors"] = $errors;
-                $this->render(__DIR__."/../../views/register.view.php", $params);
-            }
+        if (empty($errors)) {
+            $this->gateway->updateStudent($student);
+            $this->urlManager->redirect("/?notify=1");
+        } else {
+            // Re-render the form passing $errors and $values arrays
+            $params["values"] = $values;
+            $params["errors"] = $errors;
+            $this->render(__DIR__."/../../views/register.view.php", $params);
         }
     }
 
@@ -131,24 +141,29 @@ class ProfileController extends BaseController
         return $values;
     }
 
-    private function render($file, $params = [])
+    /**
+     * Renders the profile page
+     */
+    private function showProfile()
     {
-        extract($params,EXTR_SKIP);
-        return require_once "{$file}";
+        $studentData = $this->gateway->getStudentByHash($_COOKIE["hash"]);
+        $params["values"] = $studentData;
+
+        $this->render(__DIR__."/../../views/profile.view.php", $params);
     }
 
+    /**
+     * Redirecting to /register if user is not authorized
+     * Invokes controller's action based on $action property
+     */
     public function run()
     {
-        // Check if user is logged in first
         if (!$this->authManager->checkIfAuthorized()) {
-            // If he's not we redirect to the registration page
             $this->urlManager->redirect("/register");
         }
 
-        if ($this->requestMethod === "GET") {
-            $this->processGetRequest();
-        } else {
-            $this->processPostRequest();
-        }
+        $action = $this->action;
+
+        $this->$action();
     }
 }
