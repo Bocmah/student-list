@@ -3,8 +3,7 @@
     <p>Показаны результаты по запросу "<?php echo htmlspecialchars($search,ENT_QUOTES) ?>".
         <a href="/">Посмотреть всех студентов.</a></p>
 <?php endif; ?>
-<div class="uk-container">
-    <table class="uk-table uk-table-small uk-table-hover uk-table-divider students-table">
+<table class="uk-table uk-table-small uk-table-hover uk-table-divider students-table">
         <thead>
             <tr>
                 <th><a href="?<?php echo htmlspecialchars(UrlManager::getSortingLink(
@@ -47,8 +46,8 @@
                 </tr>
             <?php endforeach; ?>
     </tbody>
-    </table>
-    <ul class="uk-pagination uk-flex-center">
+</table>
+<ul class="uk-pagination uk-flex-center">
         <?php if ($page > 1): ?>
             <li><a href="?<?php echo htmlspecialchars(UrlManager::getPaginationLink(
                     $order,
@@ -104,5 +103,5 @@
         <?php else: ?>
             <li class="uk-disabled"><a><span uk-pagination-next></span></a></li>
         <?php endif; ?>
-    </ul>
-</div>
+</ul>
+
