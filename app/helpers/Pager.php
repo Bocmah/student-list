@@ -28,4 +28,31 @@ class Pager
     {
         return ceil($records/$perPage);
     }
+
+    /**
+     * Calculates starting link from which pagination links will be printed out
+     *
+     * @param int $page
+     * @param int $links
+     *
+     * @return int
+     */
+    public function calculateStartingPoint(int $page, int $links = 5): int
+    {
+        return ($page - $links > 0) ? $page - $links : 1;
+    }
+
+    /**
+     * Calculates the last link which will be printed out
+     *
+     * @param int $page
+     * @param int $totalPages
+     * @param int $links
+     *
+     * @return int
+     */
+    public function calculateEndingPoint(int $page, int $totalPages, int $links = 5): int
+    {
+        return ($page + $links < $totalPages) ? $page + $links : $totalPages;
+    }
 }

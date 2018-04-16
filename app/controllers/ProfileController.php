@@ -98,8 +98,7 @@ class ProfileController extends BaseController
             $this->urlManager->redirect("/?notify=1");
         } else {
             // Re-render the form passing $errors and $values arrays
-            $params["values"] = $values;
-            $params["errors"] = $errors;
+            $params = compact("values", "errors");
             $this->render(__DIR__."/../../views/register.view.php", $params);
         }
     }

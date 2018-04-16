@@ -72,6 +72,7 @@ class HomeController extends BaseController
     private function getPaginationInfo(): array
     {
         $pagination["perPage"] = 10;
+        $pagination["paginationLinks"] = 5;
         $pagination["page"] = isset($_GET["page"]) ? intval($_GET["page"]) : 1;
         $pagination["offset"] = $this->pager->calculatePositioning(
             $pagination["page"],
@@ -81,6 +82,42 @@ class HomeController extends BaseController
         $pagination["direction"] = isset($_GET["direction"]) ? strval($_GET["direction"]) : "DESC";
 
         return $pagination;
+    }
+
+    /**
+     * Returns an array containing amount of links to be rendered, starting and ending points of pagination
+     *
+     * @param string|null $search
+     *
+     * @return array
+     */
+    private function calculatePaginationParams(string $search = null): array
+    {
+        $paginationParams = [];
+
+        // Calculates the amount of search rows if $search query is provided.
+        // Calculates all table rows otherwise
+        if ($search) {
+            $rowCount = $this->studentDataGateway->countSearchRows($search);
+        } else {
+            $rowCount = $this->studentDataGateway->countTableRows();
+        }
+
+        $paginationParams["totalPages"] = $this->pager->calculateTotalPages(
+            $rowCount,
+            $this->paginationInfo["perPage"]
+        );
+        $paginationParams["start"] = $this->pager->calculateStartingPoint(
+            $this->paginationInfo["page"],
+            $this->paginationInfo["paginationLinks"]
+        );
+        $paginationParams["end"] = $this->pager->calculateEndingPoint(
+            $this->paginationInfo["page"],
+            $paginationParams["totalPages"],
+            $this->paginationInfo["paginationLinks"]
+        );
+
+        return $paginationParams;
     }
 
     /**
@@ -99,14 +136,19 @@ class HomeController extends BaseController
             $order,
             $direction
         );
-        $rowCount = $this->studentDataGateway->countTableRows();
-        $totalPages = $this->pager->calculateTotalPages(
-            $rowCount,
-            $this->paginationInfo["perPage"]
-        );
+        ["totalPages" => $totalPages, "start" => $start, "end" => $end] =
+            $this->calculatePaginationParams();
 
         $params = compact(
-            "totalPages", "students", "order", "direction", "search", "page", "notify"
+            "totalPages",
+            "start",
+            "end",
+            "students",
+            "order",
+            "direction",
+            "search",
+            "page",
+            "notify"
         );
 
         $this->render(__DIR__."/../../views/home.view.php",$params);
@@ -129,14 +171,20 @@ class HomeController extends BaseController
             $order,
             $direction
         );
-        $rowCount = $this->studentDataGateway->countSearchRows($search);
-        $totalPages = $this->pager->calculateTotalPages(
-            $rowCount,
-            $this->paginationInfo["perPage"]
-        );
+        ["totalPages" => $totalPages, "start" => $start, "end" => $end] =
+            $this->calculatePaginationParams($search);
 
         $params = compact(
-            "search", "order", "direction", "totalPages", "students", "page", "notify", "rowCount"
+            "search",
+            "order",
+            "direction",
+            "totalPages",
+            "start",
+            "end",
+            "students",
+            "page",
+            "notify",
+            "rowCount"
         );
 
         $this->render(__DIR__."/../../views/home.view.php",$params);
