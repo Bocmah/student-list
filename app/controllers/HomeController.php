@@ -28,9 +28,14 @@ class HomeController extends BaseController
     private $paginationInfo;
 
     /**
-     * @var
+     * @var int|null
      */
     private $notify;
+
+    /**
+     * @var bool
+     */
+    private $isAuth;
 
     /**
      * HomeController constructor.
@@ -51,8 +56,9 @@ class HomeController extends BaseController
         $this->pager = $pager;
         $this->studentDataGateway = $studentDataGateway;
         $this->authManager = $authManager;
+        $this->isAuth = $this->authManager->checkIfAuthorized();
         $this->paginationInfo = $this->getPaginationInfo();
-        $this->notify = isset($_GET["notify"]) ? $_GET["notify"] : null;
+        $this->notify = isset($_GET["notify"]) ? intval($_GET["notify"]) : null;
     }
 
     private function index()
@@ -130,6 +136,7 @@ class HomeController extends BaseController
         $direction = $this->paginationInfo["direction"];
         $page = $this->paginationInfo["page"];
         $notify = $this->notify;
+        $isAuth = $this->isAuth;
         $students = $this->studentDataGateway->getStudents(
             $this->paginationInfo["offset"],
             $this->paginationInfo["perPage"],
@@ -148,7 +155,8 @@ class HomeController extends BaseController
             "direction",
             "search",
             "page",
-            "notify"
+            "notify",
+            "isAuth"
         );
 
         $this->render(__DIR__."/../../views/home.view.php",$params);
@@ -164,6 +172,7 @@ class HomeController extends BaseController
         $direction = $this->paginationInfo["direction"];
         $page = $this->paginationInfo["page"];
         $notify = $this->notify;
+        $isAuth = $this->isAuth;
         $students = $this->studentDataGateway->searchStudents(
             $search,
             $this->paginationInfo["offset"],
@@ -184,7 +193,7 @@ class HomeController extends BaseController
             "students",
             "page",
             "notify",
-            "rowCount"
+            "isAuth"
         );
 
         $this->render(__DIR__."/../../views/home.view.php",$params);
