@@ -1,7 +1,6 @@
 <?php use StudentList\Helpers\UrlManager; ?>
 <?php if($search): ?>
-    <p>По вашему запросу "<?php echo htmlspecialchars($search, ENT_QUOTES); ?>"
-        найдено <?php echo htmlspecialchars($rowCount, ENT_QUOTES); ?> результатов.
+    <p>Показаны результаты по запросу "<?php echo htmlspecialchars($search,ENT_QUOTES) ?>".
         <a href="/">Посмотреть всех студентов.</a></p>
 <?php endif; ?>
 <div class="uk-container">
@@ -60,7 +59,18 @@
         <?php else: ?>
             <li class="uk-disabled"><a><span uk-pagination-previous></span></a></li>
         <?php endif; ?>
-        <?php for($i = 1; $i <= $totalPages; $i++): ?>
+
+        <?php if ($start > 1): ?>
+            <li><a href="?<?php echo htmlspecialchars(UrlManager::getPaginationLink(
+                    $order,
+                    $direction,
+                    $search,
+                    1
+                ), ENT_QUOTES); ?>">1</a></li>
+            <li class="uk-disabled"><span>...</span></li>
+        <?php endif; ?>
+
+        <?php for($i = $start; $i <= $end; $i++): ?>
             <?php if($i === $page): ?>
                 <li class="uk-active"><span class="uk-text-primary"><?php echo $i; ?></span></li>
             <?php else: ?>
@@ -73,6 +83,17 @@
                 </li>
             <?php endif; ?>
         <?php endfor; ?>
+
+        <?php if ($end < $totalPages): ?>
+            <li class="uk-disabled"><span>...</span></li>
+            <li><a href="?<?php echo htmlspecialchars(UrlManager::getPaginationLink(
+                    $order,
+                    $direction,
+                    $search,
+                    $totalPages
+                ), ENT_QUOTES); ?>"><?php echo htmlspecialchars($totalPages,ENT_QUOTES) ?></a></li>
+        <?php endif; ?>
+
         <?php if ($page < $totalPages): ?>
             <li><a href="?<?php echo htmlspecialchars(UrlManager::getPaginationLink(
                     $order,
