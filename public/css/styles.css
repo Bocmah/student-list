@@ -13,3 +13,13 @@
 .error-text {
     color: #f0506e;
 }
+
+.students-list__search--flex {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+}
+
+.students-list__search-message--flex {
+    margin-right: auto;
+}

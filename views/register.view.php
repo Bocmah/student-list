@@ -1,4 +1,4 @@
 <?php
 require_once "partials/header.php";
-require_once "partials/student-form.php";
+require_once "partials/sections/register-section.php";
 require_once "partials/footer.php";
