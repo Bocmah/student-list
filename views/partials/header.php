@@ -8,5 +8,6 @@
     <title>Student List </title>
     <link rel="stylesheet" href="../uikit/css/uikit.min.css">
     <link rel="stylesheet" href="../css/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
 </head>
 <body>
