@@ -23,3 +23,14 @@
 .students-list__search-message--flex {
     margin-right: auto;
 }
+
+.footer {
+    height: 80px
+}
+
+.footer-container--flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

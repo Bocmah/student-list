@@ -1,10 +1,10 @@
-<div class="uk-container uk-container-expand uk-margin-small-bottom">
-    <nav uk-navbar>
+<div class="uk-box-shadow-medium uk-margin-medium-bottom">
+    <nav class="uk-background-primary uk-light" uk-navbar>
             <div class="uk-navbar-left">
-                <ul class="uk-navbar-nav">
+                <ul class="uk-navbar-nav uk-margin-left">
                     <li>
                         <?php if ($isAuth): ?>
-                           <a href="profile">Профиль</a>
+                           <a class="uk-link-reset" href="profile">Профиль</a>
                         <?php else: ?>
                             <a href="register">Регистрация</a>
                         <?php endif; ?>
