@@ -14,8 +14,18 @@ abstract class BaseController
     protected $action;
 
 
+    /**
+     * The entry point of every controller
+     */
     abstract public function run();
 
+    /**
+     * Renders the specific view passing $params
+     *
+     * @param $file
+     * @param array $params
+     * @return mixed
+     */
     protected function render($file, array $params = [])
     {
         extract($params,EXTR_SKIP);

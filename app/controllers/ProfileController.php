@@ -64,8 +64,10 @@ class ProfileController extends BaseController
     /**
      * Index action.
      * Showing student's profile
+     *
+     * @return void
      */
-    private function index()
+    private function index(): void
     {
         $this->showProfile();
     }
@@ -73,8 +75,10 @@ class ProfileController extends BaseController
     /**
      * ShowEdit action.
      * Showing editing form
+     *
+     * @return void
      */
-    private function showEdit()
+    private function showEdit(): void
     {
         $studentData = $this->gateway->getStudentByHash($_COOKIE["hash"]);
         $params["values"] = $studentData;
@@ -85,8 +89,10 @@ class ProfileController extends BaseController
     /**
      * Store action.
      * Updates student if fields are validated. Re-renders editing form otherwise
+     *
+     * @return void
      */
-    private function store()
+    private function store(): void
     {
         $values = $this->grabPostValues();
         $student = $this->util->createStudent($values);
@@ -142,8 +148,10 @@ class ProfileController extends BaseController
 
     /**
      * Renders the profile page
+     *
+     * @return void
      */
-    private function showProfile()
+    private function showProfile(): void
     {
         $studentData = $this->gateway->getStudentByHash($_COOKIE["hash"]);
         $params["values"] = $studentData;
@@ -154,8 +162,10 @@ class ProfileController extends BaseController
     /**
      * Redirecting to /register if user is not authorized
      * Invokes controller's action based on $action property
+     *
+     * @return void
      */
-    public function run()
+    public function run(): void
     {
         if (!$this->authManager->checkIfAuthorized()) {
             $this->urlManager->redirect("/register");

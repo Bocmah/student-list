@@ -61,7 +61,12 @@ class HomeController extends BaseController
         $this->notify = isset($_GET["notify"]) ? intval($_GET["notify"]) : null;
     }
 
-    private function index()
+    /**
+     * Index action.
+     *
+     * @return void
+     */
+    private function index(): void
     {
         if (isset($_GET["search"])) {
             $this->showSearchResults();
@@ -128,8 +133,10 @@ class HomeController extends BaseController
 
     /**
      * Renders table containing all students
+     *
+     * @return void
      */
-    private function showStudentsTable()
+    private function showStudentsTable(): void
     {
         $search = null;
         $order = $this->paginationInfo["order"];
@@ -164,8 +171,10 @@ class HomeController extends BaseController
 
     /**
      * Renders table containing search results
+     *
+     * @return void
      */
-    private function showSearchResults()
+    private function showSearchResults(): void
     {
         $search = $_GET["search"];
         $order = $this->paginationInfo["order"];
@@ -201,8 +210,10 @@ class HomeController extends BaseController
 
     /**
      * Invokes controller's action based on $action property
+     *
+     * @return void
      */
-    public function run()
+    public function run(): void
     {
       $action = $this->action;
 

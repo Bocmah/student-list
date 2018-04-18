@@ -81,8 +81,10 @@ class UrlManager
      * Redirects to the $path and terminates the current script
      *
      * @param string $path
+     *
+     * @return void
      */
-    public function redirect(string $path)
+    public function redirect(string $path): void
     {
         header("Location: {$path}");
         die();

@@ -3,14 +3,49 @@ namespace StudentList\Entities;
 
 class Student
 {
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var string
+     */
     private $surname;
+
+    /**
+     * @var string
+     */
     private $groupNumber;
+
+    /**
+     * @var string
+     */
     private $email;
+
+    /**
+     * @var int
+     */
     private $examScore;
+
+    /**
+     * @var int
+     */
     private $birthYear;
+
+    /**
+     * @var string
+     */
     private $gender;
+
+    /**
+     * @var string
+     */
     private $residence;
+
+    /**
+     * @var string
+     */
     private $hash;
 
     const GENDER_MALE = "m";
@@ -18,6 +53,17 @@ class Student
     const RESIDENCE_RESIDENT = "resident";
     const RESIDENCE_NONRESIDENT = "nonresident";
 
+    /**
+     * Student constructor.
+     * @param string $name
+     * @param string $surname
+     * @param string $groupNumber
+     * @param string $email
+     * @param int $examScore
+     * @param int $birthYear
+     * @param string $gender
+     * @param string $residence
+     */
     public function __construct(string $name,
                                 string $surname,
                                 string $groupNumber,
@@ -38,65 +84,65 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getSurname()
+    public function getSurname(): string
     {
         return $this->surname;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getGroupNumber()
+    public function getGroupNumber(): string
     {
         return $this->groupNumber;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getExamScore()
+    public function getExamScore(): int
     {
         return $this->examScore;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getBirthYear()
+    public function getBirthYear(): int
     {
         return $this->birthYear;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getGender()
+    public function getGender(): string
     {
         return $this->gender;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getResidence()
+    public function getResidence(): string
     {
         return $this->residence;
     }
@@ -104,15 +150,17 @@ class Student
     /**
      * @return string
      */
-    public function getHash()
+    public function getHash(): string
     {
         return $this->hash;
     }
 
     /**
      * @param string $hash
+     *
+     * @return void
      */
-    public function setHash(string $hash)
+    public function setHash(string $hash): void
     {
         $this->hash = $hash;
     }

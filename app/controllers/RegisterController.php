@@ -65,8 +65,10 @@ class RegisterController extends BaseController
     /**
      * Index action.
      * Renders registration form
+     *
+     * @return void
      */
-    private function index()
+    private function index(): void
     {
         $this->render(__DIR__."/../../views/register.view.php");
     }
@@ -74,8 +76,10 @@ class RegisterController extends BaseController
     /**
      * Store action.
      * Storing new student in the database
+     *
+     * @return void
      */
-    private function store()
+    private function store(): void
     {
         $values = $this->grabPostValues();
         $student = $this->util->createStudent($values);
@@ -135,8 +139,10 @@ class RegisterController extends BaseController
     /**
      * Redirecting to /profile if user is not authorized
      * Invokes controller's action based on $action property
+     *
+     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Checking if user is not logged in first
         if ($this->authManager->checkIfAuthorized()) {

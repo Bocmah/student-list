@@ -23,8 +23,10 @@ class StudentDataGateway
      * Inserts new Student into `students` table
      *
      * @param Student $student
+     *
+     * @return void
      */
-    public function insertStudent(Student $student)
+    public function insertStudent(Student $student): void
     {
         $statement = $this->pdo->prepare(
             "INSERT INTO students(name, surname, gender, group_number, 
@@ -48,8 +50,10 @@ class StudentDataGateway
      * Updates a student row in `students` table
      *
      * @param Student $student
+     *
+     * @return void
      */
-    public function updateStudent(Student $student)
+    public function updateStudent(Student $student): void
     {
         $statement = $this->pdo->prepare(
           "UPDATE students 
@@ -81,9 +85,9 @@ class StudentDataGateway
      *
      * @param string $email
      *
-     * @return int
+     * @return bool
      */
-    public function checkIfEmailExists(string $email): int
+    public function checkIfEmailExists(string $email): bool
     {
         $statement = $this->pdo->prepare(
             "SELECT COUNT(*) FROM students WHERE email=?"
@@ -91,7 +95,9 @@ class StudentDataGateway
         $statement->bindParam(1, $email, \PDO::PARAM_STR);
         $statement->execute();
 
-        return (int)$statement->fetchColumn();
+        $rowCount = (int)$statement->fetchColumn();
+
+        return $rowCount > 0 ? true : false;
     }
 
     /**
