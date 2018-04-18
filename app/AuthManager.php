@@ -20,4 +20,12 @@ class AuthManager
     {
         return isset($_COOKIE["hash"]) ? true : false;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getHash()
+    {
+        return isset($_COOKIE["hash"]) ? $_COOKIE["hash"] : null;
+    }
 }
