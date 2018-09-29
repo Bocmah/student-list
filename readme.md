@@ -59,6 +59,13 @@ $ cp config.php.example config.php
 * Сортировка по любому столбцу списка
 * Поиск по любому столбцу списка
 
+## Скриншоты
+![image](https://user-images.githubusercontent.com/32432647/46250191-56ea1d00-c43e-11e8-8411-52f603c8d773.png)
+![image](https://user-images.githubusercontent.com/32432647/46250218-daa40980-c43e-11e8-8eee-94dd96fc5a3c.png)
+![image](https://user-images.githubusercontent.com/32432647/46250219-daa40980-c43e-11e8-95d8-33c7ed5ebfbf.png)
+![image](https://user-images.githubusercontent.com/32432647/46250220-daa40980-c43e-11e8-80ec-73423e924193.png)
+
+
 
 
 
